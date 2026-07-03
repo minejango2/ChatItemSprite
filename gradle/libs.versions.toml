@@ -1,0 +1,13 @@
+[versions]
+paper-api = "26.2.build.+"
+minecraft = "26.2"
+itemsadder-api = "4.0.18-beta-8"
+
+run-task = "3.0.2"
+
+[libraries]
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
+itemsadder-api = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder-api" }
+
+[plugins]
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-task" }

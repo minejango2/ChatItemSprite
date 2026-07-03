@@ -1,0 +1,46 @@
+# ChatItemSprite Configuration
+# When players type [item] in chat, it gets replaced with their held item
+
+# Enable or disable the entire plugin feature
+enabled: true
+
+# Item display format
+# Available modes:
+#   text-only - Display text only (e.g., [Netherite Sword x1])
+#   sprite-only - Display sprite only (e.g., [<sprite:items:item/netherite_sword>])
+#   both - Display both sprite and text (e.g., [<sprite:items:item/netherite_sword>Netherite Sword x1])
+item:
+  display-mode: "both"
+
+  # Format for unsupported items (like player_head, shield, tipped_arrow, etc.)
+  #   text - Display text (e.g., [Player Head x1])
+  #   none - Display nothing (e.g., [])
+  unsupported-item-fallback: "text"
+  
+  # Format for text display (used in 'text-only' and 'both' modes)
+  # Available placeholders:
+  #   {name} - Item display name (translatable, shows player's language)
+  #   {amount} - Item quantity
+  text-format: "{name} x{amount}"
+  
+  # Message when player is holding nothing (air)
+  empty-hand-format: "[Empty Hand]"
+  
+  # Show hover tooltip with full item info
+  show-hover-info: true
+  
+  # Wrap display with brackets (applies to all modes)
+  wrap-in-brackets: true
+
+# Replace all [item] tags or just the first one
+replace-all: true
+
+# Messages (supports MiniMessage formatting)
+# MiniMessage examples: <green>, <red>, <bold>, <gold>, <italic>, <#FF5555>, etc.
+# Legacy codes also work: §a (green), §c (red), §7 (gray), etc.
+messages:
+  reload-success: "<green>Configuration reloaded!"
+  no-permission: "<red>You don't have permission to reload this plugin."
+  plugin-version: "<gray>ChatItemSprite v{version}"
+  usage: "<gray>Usage: /chatitemsprite reload"
+  unknown-command: "<red>Unknown subcommand. Usage: /chatitemsprite reload"
