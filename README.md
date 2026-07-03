@@ -8,7 +8,7 @@ Unlike other chat item plugins, it displays an item sprite before the item name,
 
 ## Features
 
-* Display item sprites directly in chat
+* Display item with sprites directly in chat
 * Per-user language support for vanilla item names
 * Supports vanilla Minecraft items
 * Supports custom items from **ItemsAdder**
@@ -22,7 +22,7 @@ Unlike other chat item plugins, it displays an item sprite before the item name,
 
 ## Download Links
 
-* _Adding.._
+* -
 
 ## License
 
@@ -40,7 +40,8 @@ This project is licensed under the MIT License.
 
 ## 주요 기능
 
-* 채팅에 아이템 스프라이트 표시
+* 채팅에 아이템을 스프라이트와 함께 표시
+* 바닐라 아이템 이름이 사용자 설정 언어에 맞게 현지화
 * 바닐라 아이템 지원
 * **ItemsAdder** 커스텀 아이템 지원
 * 최신 Paper 서버에 최적화
@@ -52,6 +53,8 @@ This project is licensed under the MIT License.
 * Java 25
 
 ## 다운로드 링크
+
+* -
 
 ## 라이선스
 
