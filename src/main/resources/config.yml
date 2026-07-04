@@ -4,14 +4,17 @@
 # Enable or disable the entire plugin feature
 enabled: true
 
-# chat format for LuckPerms
+# Enable or disable LuckPerms formatting support
+luckperms-formatting: false
+
+# chat format for LuckPerms. Ignored if luckperms-formatting is false
 chat-format: "{prefix} {player}: {message}"
 
 # Item display format
 # Available modes:
 #   text-only - Display text only (e.g., [Netherite Sword x1])
 #   sprite-only - Display sprite only (e.g., [<sprite:items:item/netherite_sword>])
-#   both - Display both sprite and text (e.g., [<sprite:items:item/netherite_sword>Netherite Sword x1])
+#   both - Display both sprite and text (e.g., [<sprite:items:item/netherite_sword> Netherite Sword x1])
 item:
   display-mode: "both"
 

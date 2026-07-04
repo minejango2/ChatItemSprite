@@ -1,14 +1,8 @@
 package minej.minejango2.chatitemsprite.renderer;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import minej.minejango2.chatitemsprite.ChatItemSpritePlugin;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 import java.util.List;
 

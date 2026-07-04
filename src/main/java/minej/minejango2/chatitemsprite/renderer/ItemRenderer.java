@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 public final class ItemRenderer {
@@ -18,7 +19,40 @@ public final class ItemRenderer {
             Material.POTION,
             Material.SPLASH_POTION,
             Material.LINGERING_POTION,
-            Material.TIPPED_ARROW
+            Material.TIPPED_ARROW,
+            Material.CHEST,
+            Material.TRAPPED_CHEST,
+            Material.ENDER_CHEST,
+            Material.RED_BANNER,
+            Material.ORANGE_BANNER,
+            Material.YELLOW_BANNER,
+            Material.LIME_BANNER,
+            Material.GREEN_BANNER,
+            Material.CYAN_BANNER,
+            Material.LIGHT_BLUE_BANNER,
+            Material.BLUE_BANNER,
+            Material.PURPLE_BANNER,
+            Material.MAGENTA_BANNER,
+            Material.PINK_BANNER,
+            Material.BROWN_BANNER,
+            Material.WHITE_BANNER,
+            Material.LIGHT_GRAY_BANNER,
+            Material.GRAY_BANNER,
+            Material.BLACK_BANNER
+    );
+
+    private static final List<String> UNSUPPORTED_CATEGORIES = List.of(
+            "STAIRS",
+            "SLAB",
+            "WALL",
+            "BUTTON",
+            "FENCE",
+            "PRESSURE_PLATE",
+            "COPPER_CHEST"
+    );
+
+    private static final Set<Material> NON_UNSUPPORTED = EnumSet.of(
+            Material.COPPER_CHESTPLATE
     );
 
     private final ChatItemSpritePlugin plugin;
@@ -31,12 +65,6 @@ public final class ItemRenderer {
         this.itemsAdderRenderer = new ItemsAdderRenderer();
     }
 
-    /**
-     * Creates the chat component for the player's held item.
-     *
-     * @param player The player.
-     * @return Item component.
-     */
     public Component render(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -47,11 +75,11 @@ public final class ItemRenderer {
         return renderItem(item);
     }
 
-    @SuppressWarnings("deprecation")
     private Component renderItem(ItemStack item) {
         Component itemComponent;
 
-        if (UNSUPPORTED_SPRITES.contains(item.getType())) {
+        boolean unsupportedCategories = UNSUPPORTED_CATEGORIES.stream().anyMatch(item.getType().name()::contains);
+        if ((UNSUPPORTED_SPRITES.contains(item.getType()) || unsupportedCategories) && !NON_UNSUPPORTED.contains(item.getType())) {
             itemComponent = renderUnsupportedItem(item);
         } else {
             String displayMode = plugin.getConfig()
@@ -152,9 +180,13 @@ public final class ItemRenderer {
     private Material normalize(Material material) {
         String name = material.name();
 
-        // Remove 'WAXED_', so waxed blocks made of COPPER could get a sprite from their unwaxed form.
+        // Remove 'WAXED_', so waxed blocks made of COPPER could get a sprite from their unwaxed form
         if (name.startsWith("WAXED_")) {
             name = name.substring(6);
+        }
+
+        if (name.startsWith("INFESTED_")) {
+            name = name.substring(9);
         }
 
         try {
@@ -186,12 +218,20 @@ public final class ItemRenderer {
 
     private Component getTranslatableItemName(ItemStack item) {
         Material material = item.getType();
-        // Check if item has custom display name
-        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
-            return item.getItemMeta().displayName();
+
+        if (item.hasItemMeta()) {
+            // Check item_name component
+            if (item.getItemMeta().hasItemName()) {
+                return item.getItemMeta().itemName();
+            }
+
+            // Check item's custom display name
+            if (item.getItemMeta().hasDisplayName()) {
+                return item.getItemMeta().displayName();
+            }
         }
 
-        // Use Minecraft's translation key for the item
+        // localization support
         if (material.isBlock()) {
             String translationKey = "block.minecraft." + item.getType().toString().toLowerCase();
             return Component.translatable(translationKey);

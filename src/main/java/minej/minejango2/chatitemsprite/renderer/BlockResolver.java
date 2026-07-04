@@ -59,6 +59,7 @@ public final class BlockResolver {
             Material.CANDLE, // Dyed variation got added in below (addCustom)
             Material.BREWING_STAND,
             Material.PITCHER_PLANT,
+            Material.WILDFLOWERS,
             Material.PINK_PETALS,
             Material.CAKE,
             Material.CAMPFIRE,
@@ -71,22 +72,32 @@ public final class BlockResolver {
             Material.SEA_PICKLE,
             Material.IRON_CHAIN,
             Material.FLOWER_POT,
-            Material.BELL
+            Material.BELL,
+            Material.TURTLE_EGG,
+            Material.SNIFFER_EGG
     );
 
     private static final Set<Material> SIDE_TEXTURES = EnumSet.of(
             Material.GRASS_BLOCK,
             Material.MYCELIUM,
             Material.PODZOL,
-            Material.CRIMSON_NYLIUM,
-            Material.WARPED_NYLIUM,
+            Material.DIRT_PATH,
+            Material.TARGET,
             Material.PISTON,
             Material.STONECUTTER,
             Material.ENCHANTING_TABLE,
             Material.COMPOSTER,
             Material.END_PORTAL_FRAME,
+            Material.BASALT,
+            Material.POLISHED_BASALT,
+            Material.REINFORCED_DEEPSLATE,
             Material.SCULK_SENSOR,
-            Material.SCULK_SHRIEKER
+            Material.SCULK_SHRIEKER,
+            Material.PURPUR_PILLAR,
+            Material.QUARTZ_PILLAR,
+            Material.ANCIENT_DEBRIS,
+            Material.LODESTONE,
+            Material.FLOWERING_AZALEA // WHY MOJANG
     );
 
     private static final Set<Material> TOP_TEXTURES = EnumSet.of(
@@ -106,7 +117,8 @@ public final class BlockResolver {
             Material.CHIPPED_ANVIL,
             Material.DAMAGED_ANVIL,
             Material.BARREL,
-            Material.HONEY_BLOCK
+            Material.HONEY_BLOCK,
+            Material.DAYLIGHT_DETECTOR
     );
 
     private static final Set<Material> FRONT_TEXTURES = EnumSet.of(
@@ -127,8 +139,6 @@ public final class BlockResolver {
 
     static {
         CUSTOM_TEXTURES.put(Material.GRINDSTONE, "blocks:block/grindstone_round");
-        CUSTOM_TEXTURES.put(Material.WEEPING_VINES, "blocks:block/weeping_vines_plant");
-        CUSTOM_TEXTURES.put(Material.TWISTING_VINES, "blocks:block/twisting_vines_plant");
         CUSTOM_TEXTURES.put(Material.CONDUIT, "blocks:entity/conduit/break_particle");
         CUSTOM_TEXTURES.put(Material.CHISELED_BOOKSHELF, "blocks:block/chiseled_bookshelf_empty");
         CUSTOM_TEXTURES.put(Material.LECTERN, "blocks:block/lectern_base");
@@ -137,7 +147,17 @@ public final class BlockResolver {
         CUSTOM_TEXTURES.put(Material.RESPAWN_ANCHOR, "blocks:block/respawn_anchor_side0");
         CUSTOM_TEXTURES.put(Material.CRAFTER, "blocks:block/crafter_north");
         CUSTOM_TEXTURES.put(Material.DECORATED_POT, "decorated_pot:entity/decorated_pot/decorated_pot_side");
-        CUSTOM_TEXTURES.put(Material.CALIBRATED_SCULK_SENSOR, "blocks:calibrated_sculk_sensor_input_side");
+        CUSTOM_TEXTURES.put(Material.CALIBRATED_SCULK_SENSOR, "blocks:block/calibrated_sculk_sensor_input_side");
+        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_GRAVEL, "blocks:block/suspicious_gravel_0");
+        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_SAND, "blocks:block/suspicious_sand_0");
+        CUSTOM_TEXTURES.put(Material.DRIED_GHAST, "blocks:block/dried_ghast_hydration_0_north");
+        CUSTOM_TEXTURES.put(Material.MOSS_CARPET, "blocks:block/moss_block");
+        CUSTOM_TEXTURES.put(Material.SNOW_BLOCK, "blocks:block/snow");
+
+        // _plant
+        CUSTOM_TEXTURES.put(Material.WEEPING_VINES, "blocks:block/weeping_vines_plant");
+        CUSTOM_TEXTURES.put(Material.TWISTING_VINES, "blocks:block/twisting_vines_plant");
+        CUSTOM_TEXTURES.put(Material.AZALEA, "blocks:block/azalea_plant");
     }
 
     private static void add(Set<Material> set, String name) {
@@ -168,6 +188,9 @@ public final class BlockResolver {
                 // WOOD
                 addCustom(name + "_WOOD", "blocks:block/" + name.toLowerCase() + "_log");
                 addCustom("STRIPPED_" + name + "_WOOD", "blocks:block/stripped_" + name.toLowerCase() + "_log");
+                // SIGN
+                add(FORCE_ITEM, name + "_SIGN");
+                add(FORCE_ITEM, name + "_HANGING_SIGN");
             } catch (IllegalArgumentException ignored) {}
         }
 
@@ -181,6 +204,8 @@ public final class BlockResolver {
                 // WOOD
                 addCustom(name + "_HYPHAE", "blocks:block/" + name.toLowerCase() + "_stem");
                 addCustom("STRIPPED_" + name + "_HYPHAE", "blocks:block/stripped_" + name.toLowerCase() + "_stem");
+                // NYLIUM
+                add(SIDE_TEXTURES, name + "_NYLIUM");
             } catch (IllegalArgumentException ignored) {}
         }
 
@@ -188,7 +213,7 @@ public final class BlockResolver {
             add(FORCE_ITEM, name + "_CANDLE");
             addCustom(name + "_CANDLE", "blocks:block/" + name.toLowerCase() + "_wool");
             addCustom(name + "_GLASS_PANE", "blocks:block/" + name.toLowerCase() + "_glass");
-            addCustom(name + "_BED", "blocks:block/" + name.toLowerCase() + "_head_up");
+            addCustom(name + "_BED", "blocks:block/" + name.toLowerCase() + "_bed_head_up");
         }
 
         for (String name : COOPER_PREFIXES) {
