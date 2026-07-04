@@ -4,12 +4,12 @@
 
 Unlike other chat item plugins, it displays an item sprite before the item name, and the item name is localized based on each player's client language.
 
-*The sprite feature can be disabled in `config.yml` if desired.*\
+*The sprite feature can be disabled in `config.yml` if desired.*
 
 ## Features
 
 * Display item with sprites directly in chat
-* Per-user language support for vanilla item names
+* multilingual support for vanilla item names
 * Supports vanilla Minecraft items
 * Supports custom items from **ItemsAdder**
 * Lightweight and optimized for modern Paper servers
