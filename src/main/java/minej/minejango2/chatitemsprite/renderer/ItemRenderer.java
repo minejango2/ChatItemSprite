@@ -149,6 +149,21 @@ public final class ItemRenderer {
         return sprite.append(Component.text(" ")).append(text);
     }
 
+    private Material normalize(Material material) {
+        String name = material.name();
+
+        // Remove 'WAXED_', so waxed blocks made of COPPER could get a sprite from their unwaxed form.
+        if (name.startsWith("WAXED_")) {
+            name = name.substring(6);
+        }
+
+        try {
+            return Material.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return material;
+        }
+    }
+
     private String getSpriteKey(ItemStack item) {
         Material material = item.getType();
         String materialName = material.toString().toLowerCase();
@@ -160,8 +175,10 @@ public final class ItemRenderer {
         }
 
         // Vanilla fallback
+        material = normalize(material);
+
         if (material.isBlock()) {
-            return "blocks:block/" + materialName;
+            return BlockResolver.resolveBlockSprite(material);
         }
 
         return "items:item/" + materialName;

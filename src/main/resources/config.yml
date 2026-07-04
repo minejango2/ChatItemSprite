@@ -4,6 +4,9 @@
 # Enable or disable the entire plugin feature
 enabled: true
 
+# chat format for LuckPerms
+chat-format: "{prefix} {player}: {message}"
+
 # Item display format
 # Available modes:
 #   text-only - Display text only (e.g., [Netherite Sword x1])

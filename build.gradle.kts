@@ -12,6 +12,7 @@ dependencies {
     compileOnly(libs.paper.api)
     compileOnly("net.kyori:adventure-text-minimessage:5.2.0")
     compileOnly("beer.devs:itemsadder-api:4.0.18-beta-10")
+    compileOnly("net.luckperms:api:5.5")
 }
 
 java {

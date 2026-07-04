@@ -1,5 +1,7 @@
-name: chatitemsprite
+name: ChatItemSprite
 version: '${version}'
+
+authors: [ minejango2 ]
 
 main: minej.minejango2.chatitemsprite.ChatItemSpritePlugin
 api-version: '26.2'
@@ -7,6 +9,10 @@ load: POSTWORLD
 dependencies:
   server:
     ItemsAdder:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    LuckPerms:
       load: BEFORE
       required: false
       join-classpath: true
