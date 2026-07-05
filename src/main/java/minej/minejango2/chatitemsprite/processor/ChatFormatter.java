@@ -3,13 +3,12 @@ package minej.minejango2.chatitemsprite.processor;
 import minej.minejango2.chatitemsprite.ChatItemSpritePlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.entity.Player;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class ChatFormatter {
 
@@ -27,43 +26,25 @@ public final class ChatFormatter {
         this.plugin = plugin;
     }
 
-    private static final Pattern TOKEN = Pattern.compile("\\{(prefix|player|message)\\}");
-
     public Component format(Player player, Component message) {
         String format = plugin.getConfig().getString(
                 "chat-format",
                 "{prefix} {player}: {message}"
         );
 
-        Component prefix = parse(getPrefix(player));
-        Component name = player.displayName();
+        format = format
+                .replace("{prefix}", "<prefix>")
+                .replace("{player}", "<player>")
+                .replace("{message}", "<message>");
 
-        Component result = Component.empty();
-        Matcher matcher = TOKEN.matcher(format);
-        int last = 0;
-
-        while (matcher.find()) {
-            if (matcher.start() > last) {
-                result = result.append(Component.text(format.substring(last, matcher.start())));
-            }
-
-            result = switch (matcher.group(1)) {
-                case "prefix"  -> result.append(prefix);
-                case "player"  -> result.append(name);
-                case "message" -> result.append(message);
-                default        -> result;
-            };
-
-            last = matcher.end();
-        }
-
-        if (last < format.length()) {
-            result = result.append(Component.text(format.substring(last)));
-        }
-
-        return result;
+        return mm.deserialize(
+                format, TagResolver.resolver(
+                        Placeholder.component("prefix", parse(getPrefix(player))),
+                        Placeholder.component("player", player.displayName()),
+                        Placeholder.component("message", message)
+                )
+        );
     }
-
 
     private String getPrefix(Player player) {
         try {

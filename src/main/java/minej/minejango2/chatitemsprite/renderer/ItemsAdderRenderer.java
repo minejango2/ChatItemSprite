@@ -16,18 +16,15 @@ public final class ItemsAdderRenderer {
             return null;
         }
 
-        plugin.getLogger().info("[ItemsAdderRenderer] stack found:");
-        plugin.getLogger().info(" - id: " + stack.getId());
-
         List<String> textures = stack.getTextures();
 
         if (textures == null) {
-            plugin.getLogger().info("[ItemsAdderRenderer] textures == null");
+            //plugin.getLogger().info("[ItemsAdderRenderer] textures == null");
             return null;
         }
 
         if (textures.isEmpty()) {
-            plugin.getLogger().info("[ItemsAdderRenderer] textures is EMPTY");
+            //plugin.getLogger().info("[ItemsAdderRenderer] textures is empty");
             return null;
         }
 

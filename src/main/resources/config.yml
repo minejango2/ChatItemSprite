@@ -1,5 +1,4 @@
 # ChatItemSprite Configuration
-# When players type [item] in chat, it gets replaced with their held item
 
 # Enable or disable the entire plugin feature
 enabled: true
@@ -8,6 +7,7 @@ enabled: true
 luckperms-formatting: false
 
 # chat format for LuckPerms. Ignored if luckperms-formatting is false
+# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)`
 chat-format: "{prefix} {player}: {message}"
 
 # Item display format
@@ -43,7 +43,7 @@ replace-all: true
 
 # Messages (supports MiniMessage formatting)
 # MiniMessage examples: <green>, <red>, <bold>, <gold>, <italic>, <#FF5555>, etc.
-# Legacy codes also work: §a (green), §c (red), §7 (gray), etc.
+# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)`
 messages:
   reload-success: "<green>Configuration reloaded!"
   no-permission: "<red>You don't have permission to reload this plugin."

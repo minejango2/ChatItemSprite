@@ -47,8 +47,6 @@ public final class MessageProcessor {
                 result = result.append(itemRenderer.render(player));
             }
         }
-
         return result;
     }
 }
-
