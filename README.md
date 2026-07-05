@@ -22,7 +22,7 @@ Unlike other chat item plugins, it displays an item sprite before the item name,
 
 ## Download Links
 
-* -
+* [Modrinth Download Page](https://modrinth.com/plugin/chatitemsprite)
 
 ## License
 
@@ -54,7 +54,7 @@ This project is licensed under the MIT License.
 
 ## 다운로드 링크
 
-* -
+* [Modrinth Download Page](https://modrinth.com/plugin/chatitemsprite)
 
 ## 라이선스
 

@@ -25,7 +25,7 @@ item:
   
   # Format for text display (used in 'text-only' and 'both' modes)
   # Available placeholders:
-  #   {name} - Item display name (translatable, shows player's language)
+  #   {name} - Item display name (displaying name by player's language if Vanilla)
   #   {amount} - Item quantity
   text-format: "{name} x{amount}"
   
