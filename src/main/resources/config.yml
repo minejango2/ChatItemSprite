@@ -23,7 +23,7 @@ item:
   #   none - Display nothing (e.g., [])
   unsupported-item-fallback: "text"
   
-  # Format for text display (used in 'text-only' and 'both' modes)
+  # Format for text display
   # Available placeholders:
   #   {name} - Item display name (displaying name by player's language if Vanilla)
   #   {amount} - Item quantity
@@ -40,13 +40,3 @@ item:
 
 # Replace all [item] tags or just the first one
 replace-all: true
-
-# Messages (supports MiniMessage formatting)
-# MiniMessage examples: <green>, <red>, <bold>, <gold>, <italic>, <#FF5555>, etc.
-# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)`
-messages:
-  reload-success: "<green>Configuration reloaded!"
-  no-permission: "<red>You don't have permission to reload this plugin."
-  plugin-version: "<gray>ChatItemSprite v{version}"
-  usage: "<gray>Usage: /chatitemsprite reload"
-  unknown-command: "<red>Unknown subcommand. Usage: /chatitemsprite reload"
