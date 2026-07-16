@@ -16,20 +16,13 @@ public final class MessageProcessor {
         this.itemRenderer = new ItemRenderer(plugin);
     }
 
-    /**
-     * Process the player's chat message, replacing [item] tags.
-     *
-     * @param player The player who sent the message.
-     * @param message The original message.
-     * @return The processed message component.
-     */
     public Component process(Player player, Component message) {
-        if (!plugin.getConfig().getBoolean("enabled", true)) {
+        if (!plugin.getConfig().getBoolean("enabled", true) || !player.hasPermission("chatitemsprite.use")) {
             return message;
         }
 
+        // separate for performance
         String plainText = PlainTextComponentSerializer.plainText().serialize(message);
-
         if (!plainText.contains("[item]")) {
             return message;
         }

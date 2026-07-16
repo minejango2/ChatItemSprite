@@ -10,29 +10,25 @@ public final class ItemsAdderRenderer {
 
     public String getSpriteKey(ItemStack item) {
         CustomStack stack = CustomStack.byItemStack(item);
-        ChatItemSpritePlugin plugin = ChatItemSpritePlugin.getInstance();
 
         if (stack == null) {
-            return null;
+            return "vanilla";
         }
 
         List<String> textures = stack.getTextures();
 
         if (textures == null) {
-            //plugin.getLogger().info("[ItemsAdderRenderer] textures == null");
             return null;
         }
 
         if (textures.isEmpty()) {
-            //plugin.getLogger().info("[ItemsAdderRenderer] textures is empty");
             return null;
         }
 
-        plugin.getLogger().info("[ItemsAdderRenderer] textures = " + textures);
+        //plugin.getLogger().info("[ItemsAdderRenderer] textures = " + textures);
 
         String texture = textures.getFirst().replaceFirst("(?i)\\.(png|gif)$", "");
-
-        String result = null;
+        String result;
 
         if (stack.isBlock()) {
             result = "blocks:\"" + texture + "\"";

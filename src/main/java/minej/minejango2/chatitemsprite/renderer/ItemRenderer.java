@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public final class ItemRenderer {
@@ -58,11 +59,17 @@ public final class ItemRenderer {
     private final ChatItemSpritePlugin plugin;
     private final MiniMessage miniMessage;
     private final ItemsAdderRenderer itemsAdderRenderer;
+    //private final OraxenRenderer oraxenRenderer;
+    //private final NexoRenderer nexoRenderer;
+    //private final CraftEngineRenderer craftEngineRenderer;
 
     public ItemRenderer(ChatItemSpritePlugin plugin) {
         this.plugin = plugin;
         this.miniMessage = MiniMessage.miniMessage();
         this.itemsAdderRenderer = new ItemsAdderRenderer();
+        //this.oraxenRenderer = new OraxenRenderer();
+        //this.nexoRenderer = new NexoRenderer();
+        //this.craftEngineRenderer = new CraftEngineRenderer();
     }
 
     public Component render(Player player) {
@@ -80,44 +87,20 @@ public final class ItemRenderer {
 
         boolean unsupportedCategories = UNSUPPORTED_CATEGORIES.stream().anyMatch(item.getType().name()::contains);
         if ((UNSUPPORTED_SPRITES.contains(item.getType()) || unsupportedCategories) && !NON_UNSUPPORTED.contains(item.getType())) {
-            itemComponent = renderUnsupportedItem(item);
+            itemComponent = renderTextOnly(item);
         } else {
             String displayMode = plugin.getConfig()
                     .getString("item.display-mode", "both")
                     .toLowerCase();
 
-            switch (displayMode) {
-                case "sprite-only":
-                    itemComponent = renderSpriteOnly(item);
-                    break;
-
-                case "text-only":
-                    itemComponent = renderTextOnly(item);
-                    break;
-
-                case "both":
-                default:
-                    itemComponent = renderBoth(item);
-                    break;
-            }
+            itemComponent = switch (displayMode) {
+                case "sprite-only" -> renderSpriteOnly(item);
+                case "text-only" -> renderTextOnly(item);
+                default -> renderBoth(item);
+            };
         }
 
         return decorateItem(itemComponent, item);
-    }
-
-    private Component renderUnsupportedItem(ItemStack item) {
-        String fallback = plugin.getConfig()
-                .getString("item.unsupported-item-fallback", "text")
-                .toLowerCase();
-
-        switch (fallback) {
-            case "none":
-                return Component.empty();
-
-            case "text":
-            default:
-                return renderTextOnly(item);
-        }
     }
 
     private Component decorateItem(Component component, ItemStack item) {
@@ -146,12 +129,7 @@ public final class ItemRenderer {
         String textFormat = plugin.getConfig().getString("item.text-format", "{name} x{amount}");
         Component nameComponent = getTranslatableItemName(item);
         String amount = String.valueOf(item.getAmount());
-
-        // Replace placeholders
-        String formatted = textFormat
-                .replace("{amount}", amount);
-
-        // Build component with translatable name in the middle
+        String formatted = textFormat.replace("{amount}", amount);
         Component result = Component.empty();
         String[] nameParts = formatted.split("\\{name\\}", -1);
 
@@ -169,12 +147,13 @@ public final class ItemRenderer {
 
     private Component renderBoth(ItemStack item) {
         String spriteKey = getSpriteKey(item);
+        if (spriteKey == null) {
+            return renderTextOnly(item);
+        }
         String minimessageString = "<sprite:" + spriteKey + ">";
         Component sprite = miniMessage.deserialize(minimessageString);
 
-        Component text = renderTextOnly(item);
-
-        return sprite.append(Component.text(" ")).append(text);
+        return sprite.append(Component.text(" ")).append(renderTextOnly(item));
     }
 
     private Material normalize(Material material) {
@@ -199,12 +178,31 @@ public final class ItemRenderer {
     private String getSpriteKey(ItemStack item) {
         Material material = item.getType();
         String materialName = material.toString().toLowerCase();
+        String customFallback = plugin.getConfig().getString("item.unsupported-custom-item-fallback", "text");
 
-        String iaKey = itemsAdderRenderer.getSpriteKey(item);
-        boolean itemsAdderEnabled = plugin.itemsAdderEnabled;
-        if (iaKey != null && itemsAdderEnabled) {
-            return iaKey;
+        if (plugin.isPluginEnabled(ChatItemSpritePlugin.CustomItemPlugin.ITEMSADDER)) {
+            String key = itemsAdderRenderer.getSpriteKey(item);
+            if (key != null && !Objects.equals(key, "vanilla")) {
+                return key;
+            } else if (customFallback.equals("text") && !Objects.equals(key, "vanilla")){
+                return null;
+            }
         }
+
+        /*if (plugin.isPluginEnabled(ChatItemSpritePlugin.CustomItemPlugin.ORAXEN)) {
+            String key = oraxenRenderer.getSpriteKey(item);
+            if (key != null) return key;
+        }
+
+        if (plugin.isPluginEnabled(ChatItemSpritePlugin.CustomItemPlugin.NEXO)) {
+            String key = nexoRenderer.getSpriteKey(item);
+            if (key != null) return key;
+        }
+
+        if (plugin.isPluginEnabled(ChatItemSpritePlugin.CustomItemPlugin.CRAFTENGINE)) {
+            String key = craftEngineRenderer.getSpriteKey(item);
+            if (key != null) return key;
+        }*/
 
         // Vanilla fallback
         material = normalize(material);

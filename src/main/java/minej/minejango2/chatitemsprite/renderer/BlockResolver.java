@@ -15,7 +15,8 @@ public final class BlockResolver {
             "DARK_OAK",
             "MANGROVE",
             "CHERRY",
-            "PALE_OAK"
+            "PALE_OAK"// 26.3 ,
+            // 26.3 "POPLAR"
     );
 
     private static final List<String> NETHER_HYPHAE_NAMES = List.of(
@@ -74,7 +75,8 @@ public final class BlockResolver {
             Material.FLOWER_POT,
             Material.BELL,
             Material.TURTLE_EGG,
-            Material.SNIFFER_EGG
+            Material.SNIFFER_EGG,
+            Material.RESIN_CLUMP
     );
 
     private static final Set<Material> SIDE_TEXTURES = EnumSet.of(
@@ -102,7 +104,7 @@ public final class BlockResolver {
 
     private static final Set<Material> TOP_TEXTURES = EnumSet.of(
             Material.STICKY_PISTON,
-            Material.GLASS, // Dyed variation got added in below (addCustom)
+            Material.GLASS,
             Material.SCAFFOLDING,
             Material.CARTOGRAPHY_TABLE,
             Material.BIG_DRIPLEAF,
@@ -211,7 +213,8 @@ public final class BlockResolver {
 
         for (String name : COLOR_NAMES) {
             add(FORCE_ITEM, name + "_CANDLE");
-            addCustom(name + "_CANDLE", "blocks:block/" + name.toLowerCase() + "_wool");
+            // 26.3 add(FORCE_ITEM, name + "_CUSHION");
+            addCustom(name + "_CARPET", "blocks:block/" + name.toLowerCase() + "_wool");
             addCustom(name + "_GLASS_PANE", "blocks:block/" + name.toLowerCase() + "_glass");
             addCustom(name + "_BED", "blocks:block/" + name.toLowerCase() + "_bed_head_up");
         }

@@ -18,10 +18,10 @@ chat-format: "{prefix} {player}: {message}"
 item:
   display-mode: "both"
 
-  # Format for unsupported items (like player_head, shield, tipped_arrow, etc.)
-  #   text - Display text (e.g., [Player Head x1])
-  #   none - Display nothing (e.g., [])
-  unsupported-item-fallback: "text"
+  # Format for unsupported custom items (ItemsAdder, Oraxen, Nexo, CraftEngine)
+  #   raw - Display raw material's sprite (e.g., [<sprite:items:item/paper> Custom Item x1])
+  #   text - Display text (e.g., [Custom Item x1])
+  unsupported-custom-item-fallback: "text"
   
   # Format for text display
   # Available placeholders:

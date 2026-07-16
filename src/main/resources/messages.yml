@@ -1,14 +1,12 @@
 # ChatItemSprite Messages
 # ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)`
 reload-success: "<green>Configuration reloaded!"
-no-permission: "<red>You don't have permission to reload this plugin."
-unknown-command: "<red>Unknown subcommand. Usage: /chatitemsprite reload"
+no-permission: "<red>You don't have permission."
+unknown-command: "<red>Unknown subcommand. /chatitemsprite help for usage."
 help:
   - "<gold>═══════════════════════"
   - "<yellow>ChatItemSprite Commands"
   - ""
   - "<gold>/chatitemsprite reload <dark_gray>- Reload the plugin configuration"
   - "<gold>/chatitemsprite help <dark_gray>- Show this help menu"
-  - ""
-  - "<gray>type \"[item]\" to display your items in chat."
   - "<gold>═══════════════════════"
