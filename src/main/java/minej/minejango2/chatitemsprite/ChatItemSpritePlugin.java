@@ -1,6 +1,7 @@
 package minej.minejango2.chatitemsprite;
 
 import minej.minejango2.chatitemsprite.config.MessagesManager;
+import minej.minejango2.chatitemsprite.config.SpriteManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import minej.minejango2.chatitemsprite.command.ChatItemSpriteCommand;
@@ -12,8 +13,9 @@ public final class ChatItemSpritePlugin extends JavaPlugin {
 
     private static ChatItemSpritePlugin instance;
     private MessagesManager messagesManager;
+    private SpriteManager spriteManager;
     private final EnumSet<CustomItemPlugin> enabledPlugins = EnumSet.noneOf(CustomItemPlugin.class);
-    public boolean isPluginEnabled(CustomItemPlugin thePlugin) {
+    public boolean isPluginEnabledCustom(CustomItemPlugin thePlugin) {
         return enabledPlugins.contains(thePlugin);
     }
 
@@ -35,28 +37,26 @@ public final class ChatItemSpritePlugin extends JavaPlugin {
     }
 
     @Override
-    public void onLoad() {
-        instance = this;
-    }
+    public void onLoad() {}
 
     @Override
     public void onEnable() {
+        instance = this;
+
         saveDefaultConfig();
 
         registerListeners();
         registerCommands();
 
         messagesManager = new MessagesManager(this);
-        messagesManager.load();
+        messagesManager.reload();
+        spriteManager = new SpriteManager(this);
+        spriteManager.reload();
 
         for (CustomItemPlugin plugin : CustomItemPlugin.values()) {
             if (Bukkit.getPluginManager().isPluginEnabled(plugin.getPluginName())) {
                 enabledPlugins.add(plugin);
-                if (plugin == CustomItemPlugin.ITEMSADDER) {
-                    getLogger().info("(SUPPORTED) Detected " + plugin.getPluginName() + ".");
-                } else {
-                    getLogger().info("(UNSUPPORTED) Detected " + plugin.getPluginName() + ".");
-                }
+                getLogger().info("Detected " + plugin.getPluginName() + ".");
             }
         }
 
@@ -65,6 +65,7 @@ public final class ChatItemSpritePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        instance = null;
         getLogger().info("ChatItemSprite disabled.");
     }
 
@@ -78,9 +79,11 @@ public final class ChatItemSpritePlugin extends JavaPlugin {
 
     public void reloadPlugin() {
         reloadConfig();
-        messagesManager.load();
+        messagesManager.reload();
+        spriteManager.reload();
     }
 
     public static ChatItemSpritePlugin getInstance() {return instance;}
     public MessagesManager getMessagesManager() {return messagesManager;}
+    public SpriteManager getSpriteManager() {return spriteManager;}
 }

@@ -19,11 +19,14 @@ public class MessagesManager {
     public MessagesManager(Plugin plugin) {
         this.plugin = plugin;
         this.miniMessage = MiniMessage.miniMessage();
+
+        File file = new File(plugin.getDataFolder(), "messages.yml");
+        if (!file.exists()) {
+            plugin.saveResource("messages.yml", false);
+        }
     }
 
-    public void load() {
-        plugin.saveResource("messages.yml", false);
-
+    public void reload() {
         File messagesFile = new File(plugin.getDataFolder(), "messages.yml");
         messages = YamlConfiguration.loadConfiguration(messagesFile);
     }

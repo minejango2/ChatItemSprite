@@ -1,6 +1,5 @@
-package minej.minejango2.chatitemsprite.renderer;
+package minej.minejango2.chatitemsprite.renderer.custom;
 
-import minej.minejango2.chatitemsprite.ChatItemSpritePlugin;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,11 +7,21 @@ import java.util.List;
 
 public final class ItemsAdderRenderer {
 
-    public String getSpriteKey(ItemStack item) {
+    public String getItemsAdderResult(ItemStack item) {
+        CustomStack customStack = CustomStack.byItemStack(item);
+
+        if (customStack == null) {
+            return null;
+        }
+
+        return customStack.getNamespacedID();
+    }
+
+    public String getFallbackKey(ItemStack item) {
         CustomStack stack = CustomStack.byItemStack(item);
 
         if (stack == null) {
-            return "vanilla";
+            return "chatitemsprite-this-item-is-vanilla";
         }
 
         List<String> textures = stack.getTextures();
