@@ -7,6 +7,7 @@ import minej.minejango2.chatitemsprite.renderer.custom.NexoRenderer;
 import minej.minejango2.chatitemsprite.renderer.custom.CraftEngineRenderer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -84,177 +85,135 @@ public final class ItemRenderer {
         return renderItem(item);
     }
 
+    private static final String VANILLA_SENTINEL = "chatitemsprite-this-item-is-vanilla";
+    private static final String FALLBACK_DUDE_SENTINEL = "chatitemsprite-custom-item-fallback-dude";
+
+    private static final Set<String> VALID_DISPLAY_MODES = Set.of("both", "sprite-only", "text-only");
+    private static final Set<String> VALID_VANILLA_FALLBACKS = Set.of("text", "none");
+    private static final Set<String> VALID_CUSTOM_FALLBACKS = Set.of("text", "raw", "none");
+
+    private record SpriteLookupResult(@Nullable String key, boolean isCustomItem) {}
+
     private Component renderItem(ItemStack item) {
-        Component itemComponent;
+        String displayMode = plugin.getConfig().getString("item.display-mode", "both").toLowerCase();
 
-        String displayMode = plugin.getConfig()
-                .getString("item.display-mode", "both")
-                .toLowerCase();
+        if (!VALID_DISPLAY_MODES.contains(displayMode)) {
+            plugin.getLogger().warning("Unknown config item.display-mode '" + displayMode + "', falling back to 'both'.");
+            displayMode = "both";
+        }
 
-        itemComponent = switch (displayMode) {
-            case "sprite-only" -> renderSprite(item);
-            case "text-only" -> renderText(item);
-            default -> renderBoth(item);
-        };
+        SpriteLookupResult lookup = resolveSpriteLookup(item);
+        Component sprite = toSpriteComponent(lookup.key());
+        String formatMode = resolveFormatMode(displayMode, sprite == null, lookup.isCustomItem());
 
-        return decorateItem(itemComponent, item);
+        String format = plugin.getConfig().getString("text-format." + formatMode, defaultFormatFor(formatMode)
+        );
+
+        Component component = miniMessage.deserialize(
+                format,
+                Placeholder.component("cis_sprite", sprite == null ? Component.empty() : sprite),
+                Placeholder.component("cis_name", getNameComponent(item)),
+                Placeholder.unparsed("cis_amount", String.valueOf(item.getAmount()))
+        );
+
+        return decorateItem(component, item);
+    }
+
+    private String resolveFormatMode(String displayMode, boolean spriteMissing, boolean isCustomItem) {
+        if (!spriteMissing || displayMode.equals("text-only")) {
+            return displayMode;
+        }
+
+        String configKey = isCustomItem ? "item.unsupported-custom-item-fallback" : "item.unsupported-vanilla-item-fallback";
+        Set<String> validValues = isCustomItem ? VALID_CUSTOM_FALLBACKS : VALID_VANILLA_FALLBACKS;
+
+        String fallback = plugin.getConfig().getString(configKey, "text").toLowerCase();
+
+        if (!validValues.contains(fallback)) {
+            plugin.getLogger().warning("Unknown " + configKey + " '" + fallback + "', defaulting to 'text'. Valid values: " + validValues);
+            fallback = "text";
+        }
+
+        return fallback.equals("text") ? "text-only" : displayMode;
     }
 
     private Component decorateItem(Component component, ItemStack item) {
-        // Add hover info if enabled
         if (plugin.getConfig().getBoolean("item.show-hover-info", true)) {
             component = component.hoverEvent(item.asHoverEvent());
-        }
-
-        // Wrap in brackets if enabled
-        if (plugin.getConfig().getBoolean("item.wrap-in-brackets", true)) {
-            component = Component.text("[")
-                    .append(component)
-                    .append(Component.text("]"));
         }
 
         return component;
     }
 
-    private enum SpriteMode {
-        SPRITE,
-        TEXT,
-        EMPTY
+    private String defaultFormatFor(String formatMode) {
+        return switch (formatMode) {
+            case "sprite-only" -> "<gray>[<reset><cis_sprite><gray>]";
+            case "text-only" -> "<gray>[<reset><cis_name> x<cis_amount><gray>]";
+            default -> "<gray>[<reset><cis_sprite> <cis_name> x<cis_amount><gray>]";
+        };
     }
 
-    private record SpriteResult(Component component, SpriteMode mode) {}
-
-    private SpriteResult resolveSprite(ItemStack item) {
-        String spriteKey = getSpriteKey(item);
-
-        if (Objects.equals(spriteKey, "chatitemsprite-custom-item-fallback-dude")) {
-            String fallback = plugin.getConfig()
-                    .getString("item.unsupported-custom-item-fallback", "text")
-                    .toLowerCase();
-
-            return switch (fallback) {
-                case "none" -> new SpriteResult(Component.empty(), SpriteMode.EMPTY);
-                // case "text" -> new SpriteResult(renderText(item), SpriteMode.TEXT);
-                default -> new SpriteResult(renderText(item), SpriteMode.TEXT);
-            };
+    private Component toSpriteComponent(@Nullable String spriteKey) {
+        if (spriteKey == null || spriteKey.equals(FALLBACK_DUDE_SENTINEL)) {
+            return null;
         }
-
-        if (spriteKey == null) {
-            String fallback = plugin.getConfig()
-                    .getString("item.unsupported-vanilla-item-fallback", "text")
-                    .toLowerCase();
-
-            return switch (fallback) {
-                case "none" -> new SpriteResult(Component.empty(), SpriteMode.EMPTY);
-                // case "text" -> new SpriteResult(renderText(item), SpriteMode.TEXT);
-                default -> new SpriteResult(renderText(item), SpriteMode.TEXT);
-            };
-        }
-
-        Component sprite = miniMessage.deserialize("<sprite:" + spriteKey + ">");
-        return new SpriteResult(sprite, SpriteMode.SPRITE);
+        return miniMessage.deserialize("<sprite:" + spriteKey + ">");
     }
 
-    private Component renderSprite(ItemStack item) {
-        return resolveSprite(item).component();
-    }
-
-    private Component renderBoth(ItemStack item) {
-        SpriteResult result = resolveSprite(item);
-
-        if (result.mode() != SpriteMode.SPRITE) {
-            return result.component();
-        }
-
-        return result.component()
-                .append(Component.text(" "))
-                .append(renderText(item));
-    }
-
-    private Component renderText(ItemStack item) {
-        String textFormat = plugin.getConfig().getString("item.text-format", "{name} x{amount}");
-        String formatted = textFormat.replace("{amount}", String.valueOf(item.getAmount()));
-        Component result = Component.empty();
-        String[] nameParts = formatted.split("\\{name\\}", -1);
-
-        for (int i = 0; i < nameParts.length; i++) {
-            if (!nameParts[i].isEmpty()) {
-                result = result.append(Component.text(nameParts[i]));
-            }
-            if (i < nameParts.length - 1) {
-                result = result.append(getTranslatableItemName(item));
-            }
-        }
-
-        return result;
-    }
-
-    private Material normalizeVanillaName(Material material) {
-        String name = material.name();
-
-        // Remove 'WAXED_', so waxed blocks made of COPPER could get a sprite from their unwaxed form
-        if (name.startsWith("WAXED_")) {
-            name = name.substring(6);
-        }
-
-        if (name.startsWith("INFESTED_")) {
-            name = name.substring(9);
-        }
-
-        try {
-            return Material.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            return material;
-        }
-    }
-
-    private String getSpriteKey(ItemStack item) {
+    private SpriteLookupResult resolveSpriteLookup(ItemStack item) {
         Material material = item.getType();
         String materialName = material.toString().toLowerCase();
-        String customFallback = plugin.getConfig().getString("item.unsupported-custom-item-fallback", "text");
+        String customFallback = plugin.getConfig().getString("item.unsupported-custom-item-fallback", "text").toLowerCase();
 
         String customKey = getDefinedSprite(item);
+        boolean isCustom = customKey != null && !customKey.equals(VANILLA_SENTINEL);
 
-        // Custom item convert + fallback
-        if (customKey != null && !customKey.equals("chatitemsprite-this-item-is-vanilla") && !customFallback.equals("raw")) {
-            // plugin.getLogger().info("get back " + customKey);
-            return customKey;
-        }
+        // Custom convert
+        if (isCustom) {
+            if (!customKey.equals(FALLBACK_DUDE_SENTINEL)) {
+                return new SpriteLookupResult(customKey, true);
+            }
 
-        // ItemsAdder try fallback
-        if (plugin.isPluginEnabledCustom(ChatItemSpritePlugin.CustomItemPlugin.ITEMSADDER)) {
-            String fallbackKey = itemsAdderRenderer.getFallbackKey(item);
-            if (fallbackKey != null && !Objects.equals(fallbackKey, "chatitemsprite-this-item-is-vanilla")) {
-                return fallbackKey;
-            } else if (customFallback.equals("text")){
-                return null;
+            if (customFallback.equals("raw")) {
+                // IA custom fallback
+                if (plugin.isPluginEnabledCustom(ChatItemSpritePlugin.CustomItemPlugin.ITEMSADDER)) {
+                    String fallbackKey = itemsAdderRenderer.getFallbackKey(item);
+                    if (fallbackKey != null && !fallbackKey.equals(VANILLA_SENTINEL)) {
+                        return new SpriteLookupResult(fallbackKey, true);
+                    }
+                }
+            } else if (customFallback.equals("none") || customFallback.equals("text")) {
+                return new SpriteLookupResult(null, true);
+            } else {
+                plugin.getLogger().warning("Unknown config item.unsupported-custom-item-fallback '" + customFallback + "', defaulting to 'text'.");
+                return new SpriteLookupResult(null, true);
             }
         }
 
         // Vanilla convert
         String definedVanillaSprite = plugin.getSpriteManager().getVanillaPath(materialName);
         if (definedVanillaSprite != null) {
-            return definedVanillaSprite;
+            return new SpriteLookupResult(definedVanillaSprite, isCustom);
         }
 
         // Vanilla fallback
-        material = normalizeVanillaName(material);
+        Material normalized = normalizeVanillaName(material);
 
-        boolean unsupportedCategories = UNSUPPORTED_CATEGORIES.stream().anyMatch(item.getType().name()::contains);
-        if ((UNSUPPORTED_SPRITES.contains(item.getType()) || unsupportedCategories) && !NON_UNSUPPORTED.contains(item.getType())) {
-            return null;
+        boolean unsupportedCategories = UNSUPPORTED_CATEGORIES.stream().anyMatch(material.name()::contains);
+        if ((UNSUPPORTED_SPRITES.contains(material) || unsupportedCategories) && !NON_UNSUPPORTED.contains(material)) {
+            return new SpriteLookupResult(null, isCustom);
         }
 
-        if (material.isBlock()) {
-            return BlockResolver.resolveBlockSprite(material);
+        if (normalized.isBlock()) {
+            return new SpriteLookupResult(BlockResolver.resolveBlockSprite(normalized), isCustom);
         }
 
-        return "items:item/" + materialName;
+        return new SpriteLookupResult("items:item/" + materialName, isCustom);
     }
 
+    // Custom Item Detector
     @Nullable
     private String getDefinedSprite(ItemStack item) {
-
         if (plugin.isPluginEnabledCustom(ChatItemSpritePlugin.CustomItemPlugin.ITEMSADDER)) {
             String result = itemsAdderRenderer.getItemsAdderResult(item);
 
@@ -324,7 +283,28 @@ public final class ItemRenderer {
         return null;
     }
 
-    private Component getTranslatableItemName(ItemStack item) {
+    // Remove unnecessary prefix like 'WAXED_' etc.
+    private Material normalizeVanillaName(Material material) {
+        String name = material.name();
+
+
+        if (name.startsWith("WAXED_")) {
+            name = name.substring(6);
+        }
+
+        if (name.startsWith("INFESTED_")) {
+            name = name.substring(9);
+        }
+
+        try {
+            return Material.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return material;
+        }
+    }
+
+    // Localization support
+    private Component getNameComponent(ItemStack item) {
         Material material = item.getType();
 
         if (item.hasItemMeta()) {
@@ -351,6 +331,6 @@ public final class ItemRenderer {
 
     private Component renderEmptyHand() {
         String format = plugin.getConfig().getString("item.empty-hand-format", "[Empty Hand]");
-        return Component.text(format);
+        return miniMessage.deserialize(format);
     }
 }

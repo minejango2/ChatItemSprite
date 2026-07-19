@@ -7,7 +7,7 @@ enabled: true
 luckperms-formatting: false
 
 # chat format for LuckPerms. Ignored if luckperms-formatting is false
-# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)`
+# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)
 # LuckPerms prefix's legacy color codes still works
 chat-format: "{prefix} {player}: {message}"
 
@@ -19,30 +19,29 @@ chat-format: "{prefix} {player}: {message}"
 item:
   display-mode: "both"
 
-  # Format for unsupported items (like player_head, shield, tipped_arrow, etc.)
-  #   text - Display text (e.g., [Player Head x1])
+  # Format for unsupported vanilla items (like player_head, shield, tipped_arrow, etc.)
+  # if you want to add a support for these items, you can add in define-vanilla-sprites
+  #   text (default) - Display text-only format (e.g., [Player Head x1])
   #   none - Display nothing (e.g., [])
-  unsupported-item-fallback: "text"
+  unsupported-vanilla-item-fallback: "text"
 
-  # Format for unsupported custom items (ItemsAdder, Oraxen, Nexo, CraftEngine)
-  #   raw - Display raw material's sprite (e.g., [<sprite:items:item/paper> Custom Item x1])
-  #   text - Display text (e.g., [Custom Item x1])
+  # Format for unsupported/texture-missing custom items (ItemsAdder, Oraxen, Nexo, CraftEngine)
+  #   raw - Display raw material's sprite by sprite-only format (e.g., [<sprite:items:item/iron_sword> Ruby Sword x1])
+  #   text (default) - Display text-only format (e.g., [Ruby x1])
+  #   none - Display nothing (e.g., [])
   unsupported-custom-item-fallback: "text"
-  
-  # Format for text display
-  # Available placeholders:
-  #   {name} - Item display name (displaying name by player's language if Vanilla)
-  #   {amount} - Item quantity
-  text-format: "{name} x{amount}"
-  
-  # Message when player is holding nothing (air)
-  empty-hand-format: "[Empty Hand]"
-  
+
   # Show hover tooltip with full item info
   show-hover-info: true
-  
-  # Wrap display with brackets (applies to all modes)
-  wrap-in-brackets: true
+
+# [item] Text Format
+# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)
+text-format:
+  "sprite-only": "<gray>[<reset><cis_sprite><gray>]"
+  "text-only": "<gray>[<reset><cis_name> x<cis_amount><gray>]"
+  "both": "<gray>[<reset><cis_sprite> <cis_name> x<cis_amount><gray>]"
+  # Message when player is holding nothing (air)
+  empty-hand-format: "<gray>[<reset>Empty Hand<gray>]"
 
 # Vanilla item sprite definitions
 # Format: "<vanilla_item_id>": "<atlas>:<sprite_path>"
