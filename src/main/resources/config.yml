@@ -53,7 +53,8 @@ define-vanilla-sprites:
 # Currently supports: ItemsAdder, Oraxen, Nexo, CraftEngine
 # if you need to change atlas by other namespaces, escape double quotation marks with \
 define-custom-item-sprites:
-  "itemsadder:example_pack:paper_sword": items:item/paper_sword_1
+  "itemsadder:example_pack:paper_sword": "items:\"example_pack:item/paper_sword_1\""
+  "oraxen:amethyst_ore": items:default/amethyst_ore
   "craftengine:default:drill": "\"minecraft:items\":item/custom/drill_selected"
 
 # Replace all [item] tags
