@@ -11,8 +11,7 @@ Unlike other chat item plugins, it displays an item sprite before the item name,
 * Display item with sprites directly in chat
 * * configuarable display sprites with config
 * multilingual support for vanilla item names
-* Supports vanilla Minecraft items
-* Supports custom items from **ItemsAdder**
+* Supports custom items from **ItemsAdder, Oraxen, Nexo, CraftEngine**
 * Lightweight and optimized for modern Paper servers
 * Designed to work seamlessly with existing chat systems
 
@@ -44,8 +43,7 @@ This project is licensed under the MIT License.
 * 채팅에 아이템을 스프라이트와 함께 표시
 * * Config로 사용자 지정 스프라이트 설정 가능
 * 바닐라 아이템 이름이 사용자 설정 언어에 맞게 현지화
-* 바닐라 아이템 지원
-* **ItemsAdder** 커스텀 아이템 지원
+* **ItemsAdder, Oraxen, Nexo, CraftEngine** 커스텀 아이템 지원
 * 최신 Paper 서버에 최적화
 * 기존 채팅 플러그인과 함께 사용 가능하도록 설계
 
@@ -60,4 +58,4 @@ This project is licensed under the MIT License.
 
 ## 라이선스
 
-This project is licensed under the MIT License.
+이 프로젝트는 MIT 라이선스를 따릅니다.
