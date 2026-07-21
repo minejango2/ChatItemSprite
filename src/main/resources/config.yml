@@ -1,4 +1,5 @@
 # ChatItemSprite Configuration
+# for strings, we ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)
 
 # Enable or disable the entire plugin feature
 enabled: true
@@ -7,11 +8,11 @@ enabled: true
 luckperms-formatting: false
 
 # chat format for LuckPerms. Ignored if luckperms-formatting is false
-# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)
-# LuckPerms prefix's legacy color codes still works
+# LuckPerms prefix's legacy color codes still works - we use the code as same as LuckPerms for prefix
 chat-format: "{prefix} {player}: {message}"
 
 # Item display format
+# fallback works different, see https://github.com/minejango2/ChatItemSprite/wiki/Configuration-Guide
 # Available modes:
 #   text-only - Display text only (e.g., [Netherite Sword x1])
 #   sprite-only - Display sprite only (e.g., [<sprite:items:item/netherite_sword>])
@@ -22,26 +23,40 @@ item:
   # Format for unsupported vanilla items (like player_head, shield, tipped_arrow, etc.)
   # if you want to add a support for these items, you can add in define-vanilla-sprites
   #   text (default) - Display text-only format (e.g., [Player Head x1])
-  #   none - Display nothing (e.g., [])
+  #   none - Display fallback-none format (e.g., [?])
   unsupported-vanilla-item-fallback: "text"
 
   # Format for unsupported/texture-missing custom items (ItemsAdder, Oraxen, Nexo, CraftEngine)
   #   raw - Display raw material's sprite by sprite-only format (e.g., [<sprite:items:item/iron_sword> Ruby Sword x1])
   #   text (default) - Display text-only format (e.g., [Ruby x1])
-  #   none - Display nothing (e.g., [])
+  #   none - Display fallback-none format (e.g., [?])
   unsupported-custom-item-fallback: "text"
 
   # Show hover tooltip with full item info
   show-hover-info: true
 
+  # remove item's amount
+  # resolved ONLY in <cis_amount_tag>
+  hide-amount-when-one: false
+
 # [item] Text Format
-# ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)
+# Custom tags:
+#   <cis_sprite> - print sprite as MiniMessage <sprite> (works properly in "both", "sprite-only")
+#   <cis_name> - print localized item name (works properly in "both", "text-only")
+#   <cis_amount_tag> - print amount-tag-format (works properly in "both", "sprite-only", "text-only")
+#   <cis_amount> - [DEPRECATED: hide-amount-when-one WON'T WORK] print item's amount. (works properly in "both", "sprite-only", "text-only")
+#                  Instead of writing <cis_amount> directly in `text-format`, it is recommended to use `<cis_amount_tag>`.
 text-format:
   "sprite-only": "<gray>[<reset><cis_sprite><gray>]"
-  "text-only": "<gray>[<reset><cis_name> x<cis_amount><gray>]"
-  "both": "<gray>[<reset><cis_sprite> <cis_name> x<cis_amount><gray>]"
+  "text-only": "<gray>[<reset><cis_name><cis_amount_tag><gray>]"
+  "both": "<gray>[<reset><cis_sprite> <cis_name><cis_amount_tag><gray>]"
+  "fallback-none": "<gray>[<reset>?<gray>]"
   # Message when player is holding nothing (air)
   empty-hand-format: "<gray>[<reset>Empty Hand<gray>]"
+
+# <cis_amount_tag> format
+#   <cis_amount_number> - print item's amount
+amount-tag-format: " x<cis_amount_number>"
 
 # Vanilla item sprite definitions
 # Format: "<vanilla_item_id>": "<atlas>:<sprite_path>"

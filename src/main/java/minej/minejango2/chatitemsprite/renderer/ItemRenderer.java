@@ -113,10 +113,31 @@ public final class ItemRenderer {
                 format,
                 Placeholder.component("cis_sprite", sprite == null ? Component.empty() : sprite),
                 Placeholder.component("cis_name", getNameComponent(item)),
-                Placeholder.unparsed("cis_amount", String.valueOf(item.getAmount()))
+                Placeholder.unparsed("cis_amount", String.valueOf(item.getAmount())), // DEPRECATED
+                Placeholder.component("cis_amount_tag", renderAmountTag(item.getAmount(), format))
         );
 
         return decorateItem(component, item);
+    }
+
+    private Component renderAmountTag(int amount, String format) {
+        if (!format.contains("<cis_amount_tag>")) {
+            return Component.empty();
+        }
+
+        boolean hideWhenOne = plugin.getConfig().getBoolean("item.hide-amount-when-one", false);
+        if (hideWhenOne && amount == 1) {
+            return Component.empty();
+        }
+
+        String template = plugin.getConfig().getString("amount-tag-format", "<cis_amount_number>x ");
+        String amountStr = String.valueOf(amount);
+
+        return miniMessage.deserialize(
+                template,
+                Placeholder.unparsed("cis_amount_number", amountStr),
+                Placeholder.unparsed("cis_amount", amountStr)
+        );
     }
 
     private String resolveFormatMode(String displayMode, boolean spriteMissing, boolean isCustomItem) {
@@ -134,7 +155,11 @@ public final class ItemRenderer {
             fallback = "text";
         }
 
-        return fallback.equals("text") ? "text-only" : displayMode;
+        return switch (fallback) {
+            case "text" -> "text-only";
+            case "none" -> "fallback-none";
+            default -> displayMode;
+        };
     }
 
     private Component decorateItem(Component component, ItemStack item) {
@@ -148,8 +173,9 @@ public final class ItemRenderer {
     private String defaultFormatFor(String formatMode) {
         return switch (formatMode) {
             case "sprite-only" -> "<gray>[<reset><cis_sprite><gray>]";
-            case "text-only" -> "<gray>[<reset><cis_name> x<cis_amount><gray>]";
-            default -> "<gray>[<reset><cis_sprite> <cis_name> x<cis_amount><gray>]";
+            case "text-only" -> "<gray>[<reset><cis_name><cis_amount_tag><gray>]";
+            case "fallback-none" -> "<gray>[<reset>?<gray>]";
+            default -> "<gray>[<reset><cis_sprite> <cis_name><cis_amount_tag><gray>]";
         };
     }
 
