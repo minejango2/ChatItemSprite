@@ -17,8 +17,16 @@ import java.util.*;
 
 public final class ItemRenderer {
 
+    private static final Set<Material> MOB_HEADS = EnumSet.of(
+            Material.ZOMBIE_HEAD/*,
+            Material.CREEPER_HEAD,
+            Material.SKELETON_SKULL,
+            Material.WITHER_SKELETON_SKULL,
+            Material.DRAGON_HEAD,
+            Material.PIGLIN_HEAD*/
+    );
+
     private static final Set<Material> UNSUPPORTED_SPRITES = EnumSet.of(
-            Material.PLAYER_HEAD,
             Material.SHIELD,
             Material.POTION,
             Material.SPLASH_POTION,
@@ -42,7 +50,13 @@ public final class ItemRenderer {
             Material.WHITE_BANNER,
             Material.LIGHT_GRAY_BANNER,
             Material.GRAY_BANNER,
-            Material.BLACK_BANNER
+            Material.BLACK_BANNER,
+            // not yet - I couldn't find a safe solutions for these heads
+            Material.CREEPER_HEAD,
+            Material.SKELETON_SKULL,
+            Material.WITHER_SKELETON_SKULL,
+            Material.DRAGON_HEAD,
+            Material.PIGLIN_HEAD
     );
 
     private static final List<String> UNSUPPORTED_CATEGORIES = List.of(
@@ -92,7 +106,11 @@ public final class ItemRenderer {
     private static final Set<String> VALID_VANILLA_FALLBACKS = Set.of("text", "none");
     private static final Set<String> VALID_CUSTOM_FALLBACKS = Set.of("text", "raw", "none");
 
-    private record SpriteLookupResult(@Nullable String key, boolean isCustomItem) {}
+    private record SpriteLookupResult(@Nullable String key, boolean isCustomItem, @Nullable Component prebuiltComponent) {
+        SpriteLookupResult(@Nullable String key, boolean isCustomItem) {
+            this(key, isCustomItem, null);
+        }
+    }
 
     private Component renderItem(ItemStack item) {
         String displayMode = plugin.getConfig().getString("item.display-mode", "both").toLowerCase();
@@ -103,7 +121,7 @@ public final class ItemRenderer {
         }
 
         SpriteLookupResult lookup = resolveSpriteLookup(item);
-        Component sprite = toSpriteComponent(lookup.key());
+        Component sprite = lookup.prebuiltComponent() != null ? lookup.prebuiltComponent() : toSpriteComponent(lookup.key());
         String formatMode = resolveFormatMode(displayMode, sprite == null, lookup.isCustomItem());
 
         String format = plugin.getConfig().getString("text-format." + formatMode, defaultFormatFor(formatMode)
@@ -216,6 +234,8 @@ public final class ItemRenderer {
             }
         }
 
+        // V
+
         // Vanilla convert
         String definedVanillaSprite = plugin.getSpriteManager().getVanillaPath(materialName);
         if (definedVanillaSprite != null) {
@@ -223,6 +243,24 @@ public final class ItemRenderer {
         }
 
         // Vanilla fallback
+        // Player Head Fallback
+        if (!isCustom && material == Material.PLAYER_HEAD) {
+            Component headComponent = HeadResolver.resolveHeadComponent(item);
+            if (headComponent != null) {
+                return new SpriteLookupResult(null, false, headComponent);
+            }
+        }
+
+        // Mob Head Fallback
+        if (!isCustom && MOB_HEADS.contains(material)) {
+            Component mobHeadComponent = HeadResolver.resolveMobHeadComponent(item);
+            if (mobHeadComponent != null) {
+                return new SpriteLookupResult(null, false, mobHeadComponent);
+            }
+        }
+
+
+        // remove unnecessary prefix
         Material normalized = normalizeVanillaName(material);
 
         boolean unsupportedCategories = UNSUPPORTED_CATEGORIES.stream().anyMatch(material.name()::contains);
@@ -230,6 +268,7 @@ public final class ItemRenderer {
             return new SpriteLookupResult(null, isCustom);
         }
 
+        // Block Fallback
         if (normalized.isBlock()) {
             return new SpriteLookupResult(BlockResolver.resolveBlockSprite(normalized), isCustom);
         }
