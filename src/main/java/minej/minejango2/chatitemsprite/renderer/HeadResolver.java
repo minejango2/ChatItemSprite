@@ -10,8 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.classfile.CompoundElement;
-
 public final class HeadResolver {
 
     private HeadResolver() {}

@@ -31,8 +31,17 @@ dependencies:
 
 permissions:
   chatitemsprite.use:
-    description: Allows using the chatitemsprite feature
+    description: Allows using the ChatItemSprite feature
     default: true
-  chatitemsprite.reload:
-    description: Allows reloading the chatitemsprite plugin
+  chatitemsprite.command:
+    description: Allows using ChatItemSprite commands
+    default: op
+  chatitemsprite.command.reload:
+    description: Allows reloading the ChatItemSprite plugin
+    default: op
+  chatitemsprite.command.help:
+    description: Allows using /chatitemsprite help
+    default: op
+  chatitemsprite.command.version:
+    description: Allows check latest ChatItemSprite version
     default: op

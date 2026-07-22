@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     alias(libs.plugins.run.paper)
+    alias(libs.plugins.shadow)
 }
 
 repositories {
@@ -20,6 +21,8 @@ dependencies {
     compileOnly("net.momirealms:craft-engine-bukkit:26.7")
     compileOnly("com.nexomc:nexo:1.25.0")
     compileOnly("io.th0rgal:oraxen:1.217.0")
+
+    implementation("org.bstats:bstats-bukkit:3.2.1")
 }
 
 java {
@@ -38,6 +41,21 @@ tasks {
             expand(props)
         }
     }
+}
+
+tasks.shadowJar {
+    archiveClassifier.set("")
+
+    configurations = project.configurations.runtimeClasspath.map { setOf(it) }
+
+    dependencies {
+        // Only merge bStats into the final jar, no other dependencies
+        exclude { it.moduleGroup != "org.bstats" }
+    }
+
+    // Relocate bStats into the plugin's package to avoid conflicts with other
+    // plugins using bStats
+    relocate("org.bstats", "minej.minejango2.chatitemsprite.libs.bstats")
 }
 
 tasks.withType<JavaCompile>().configureEach {

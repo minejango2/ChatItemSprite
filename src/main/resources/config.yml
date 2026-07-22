@@ -4,12 +4,22 @@
 # Enable or disable the entire plugin feature
 enabled: true
 
+# Update Checker
+update-check:
+  enabled: true
+  # Also notify about beta versions.
+  notify-beta: false
+
 # Enable or disable LuckPerms formatting support
 luckperms-formatting: false
 
 # chat format for LuckPerms. Ignored if luckperms-formatting is false
 # LuckPerms prefix's legacy color codes still works - we use the code as same as LuckPerms for prefix
 chat-format: "{prefix} {player}: {message}"
+
+# Replace all [item] tags
+# if false, only the first [item] text will be replaced
+replace-all: true
 
 # Item display format
 # fallback works different, see https://github.com/minejango2/ChatItemSprite/wiki/Configuration-Guide
@@ -44,7 +54,7 @@ item:
 #   <cis_sprite> - print sprite as MiniMessage <sprite> (works properly in "both", "sprite-only")
 #   <cis_name> - print localized item name (works properly in "both", "text-only")
 #   <cis_amount_tag> - print amount-tag-format (works properly in "both", "sprite-only", "text-only")
-#   <cis_amount> - [DEPRECATED: hide-amount-when-one WON'T WORK] print item's amount. (works properly in "both", "sprite-only", "text-only")
+#   <cis_amount> (DEPRECATED) - [hide-amount-when-one WON'T WORK] print item's amount. (works properly in "both", "sprite-only", "text-only")
 #                  Instead of writing <cis_amount> directly in `text-format`, it is recommended to use `<cis_amount_tag>`.
 text-format:
   "sprite-only": "<gray>[<reset><cis_sprite><gray>]"
@@ -71,7 +81,3 @@ define-custom-item-sprites:
   "itemsadder:example_pack:paper_sword": "items:\"example_pack:item/paper_sword_1\""
   "oraxen:amethyst_ore": blocks:default/amethyst_ore
   "craftengine:default:drill": "\"minecraft:items\":item/custom/drill_selected"
-
-# Replace all [item] tags
-# if false, only the first [item] text will be replaced
-replace-all: true

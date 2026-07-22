@@ -27,6 +27,7 @@ public final class ItemRenderer {
     );
 
     private static final Set<Material> UNSUPPORTED_SPRITES = EnumSet.of(
+            // COPPER GOLEM STATUES
             Material.SHIELD,
             Material.POTION,
             Material.SPLASH_POTION,
@@ -66,7 +67,8 @@ public final class ItemRenderer {
             "BUTTON",
             "FENCE",
             "PRESSURE_PLATE",
-            "COPPER_CHEST"
+            "COPPER_CHEST",
+            "GOLEM_STATUE"
     );
 
     private static final Set<Material> NON_UNSUPPORTED = EnumSet.of(
