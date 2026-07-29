@@ -26,17 +26,20 @@ public final class ItemsAdderRenderer {
 
         List<String> textures = stack.getTextures();
 
-        if (textures == null) {
+        if (textures == null || textures.isEmpty()) {
             return null;
         }
 
-        if (textures.isEmpty()) {
+        String firstTexture = textures.getFirst();
+
+        // ItemsAdder only registers textures inside subfolders to the sprite atlas.
+        if (!firstTexture.contains("/")) {
             return null;
         }
 
         //plugin.getLogger().info("[ItemsAdderRenderer] textures = " + textures);
 
-        String texture = textures.getFirst().replaceFirst("(?i)\\.(png|gif)$", "");
+        String texture = firstTexture.replaceFirst("(?i)\\.(png|gif)$", "");
         String result;
 
         if (stack.isBlock()) {

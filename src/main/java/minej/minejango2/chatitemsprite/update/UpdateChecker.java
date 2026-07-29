@@ -1,4 +1,4 @@
-package minej.minejango2.chatitemsprite.updater;
+package minej.minejango2.chatitemsprite.update;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

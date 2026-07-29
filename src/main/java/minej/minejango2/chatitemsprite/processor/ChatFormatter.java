@@ -29,19 +29,14 @@ public final class ChatFormatter {
     public Component format(Player player, Component message) {
         String format = plugin.getConfig().getString(
                 "chat-format",
-                "{prefix} {player}: {message}"
+                "<cis_prefix> <cis_player>: <cis_message>"
         );
-
-        format = format
-                .replace("{prefix}", "<prefix>")
-                .replace("{player}", "<player>")
-                .replace("{message}", "<message>");
 
         return mm.deserialize(
                 format, TagResolver.resolver(
-                        Placeholder.component("prefix", parse(getPrefix(player))),
-                        Placeholder.component("player", player.displayName()),
-                        Placeholder.component("message", message)
+                        Placeholder.component("cis_prefix", parse(getPrefix(player))),
+                        Placeholder.component("cis_player", player.displayName()),
+                        Placeholder.component("cis_message", message)
                 )
         );
     }

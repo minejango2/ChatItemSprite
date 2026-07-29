@@ -1,12 +1,62 @@
 # ChatItemSprite Messages
 # ONLY supports MiniMessage formatting. Do not use legacy color codes (&, §)`
-reload-success: "<green>Configuration reloaded!"
-no-permission: "<red>You don't have permission."
-unknown-command: "<red>Unknown subcommand. /chatitemsprite help for usage."
+messages:
+  # command basic messages
+  check-help: "<gradient:#89A685:#637758>Welcome! Please use \"/chatitemsprite help\" for helps!</gradient>"
+  no-permission: "<red>You don't have permission.</red>"
+  reloaded-with-warn: "<yellow>ChatItemSprite got an issue while reloading. Please check console for details.</yellow>"
+  reload-success: "<green>Reloaded ChatItemSprite!</green>"
+  unknown-command: "<red>Unknown subcommand. please use /chatitemsprite help for usage.</red>"
+
+  # command /chatitemsprite settings
+  saved-config: "<green>Updated <config_path> to <config_value>.</green>"
+
+  # command /chatitemsprite settings sprite
+  settings-sprite-invalid: "<red>'<value>' is not a valid MiniMessage value.</red>"
+  settings-sprite-set: "<green>Added/Set: '<key>' -> <value></green>"
+  settings-sprite-not-found: "<yellow>No sprite defined for '<key>'.</yellow>"
+  settings-sprite-removed: "<green>Removed: '<key>'.</green>"
+
+  # command /chatitemsprite versions
+  version-checking: "<gray>Checking for updates...</gray>"
+  version-current: "<gray>ChatItemSprite <current></gray>"
+  version-latest: "<gray>Latest: <latest></gray>"
+  version-type: "<gray>Type: <type></gray>"
+  version-update-available: "<green>Update available!</green>"
+  version-up-to-date: "<green>You are using the latest version.</green>"
+  version-unknown: "<yellow>Could not check for updates.</yellow>"
+  version-compare-failed: "<yellow>Could not compare version numbers.</yellow>"
+  version-check-failed: "<red>Failed to check for updates.</red>"
+
+# command /chatitemsprite help
 help:
-  - "<gold>═══════════════════════"
-  - "<yellow>ChatItemSprite Commands"
+  - "<gradient:#637758:#3A463D>═══════════════════════</gradient>"
+  - "<gradient:#89A685:#637758>ChatItemSprite Commands</gradient>"
   - ""
-  - "<gold>/chatitemsprite reload <dark_gray>- Reload the plugin configuration"
-  - "<gold>/chatitemsprite help <dark_gray>- Show this help menu"
-  - "<gold>═══════════════════════"
+  - "<color:#CFDDCA>/chatitemsprite reload</color> <dark_gray>-</dark_gray> <color:#89A685>Reload all configurations.</color>"
+  - "<color:#CFDDCA>/chatitemsprite help</color> <dark_gray>-</dark_gray> <color:#89A685>Show this help menu.</color>"
+  - "<color:#CFDDCA>/chatitemsprite version</color> <dark_gray>-</dark_gray> <color:#89A685>Check the current and latest plugin version by Modrinth.</color>"
+  - "<color:#CFDDCA>/chatitemsprite settings</color> <dark_gray>-</dark_gray> <color:#89A685>Help & Edit ChatItemSprite configuration.</color>"
+  - "<gradient:#637758:#3A463D>═══════════════════════</gradient>"
+
+help-settings:
+  - "<gradient:#637758:#3A463D>═══════════════════════</gradient>"
+  - "<gradient:#89A685:#637758>ChatItemSprite Settings Commands</gradient>"
+  - ""
+  - "<color:#CFDDCA>/chatitemsprite settings display-mode <mode></color> <dark_gray>-</dark_gray> <color:#89A685>Set display-mode"
+  - "<color:#CFDDCA>/chatitemsprite settings vanilla-fallback <mode></color> <dark_gray>-</dark_gray> <color:#89A685>Set unsupported-vanilla-item-fallback"
+  - "<color:#CFDDCA>/chatitemsprite settings custom-fallback <mode></color> <dark_gray>-</dark_gray> <color:#89A685>Set unsupported-custom-item-fallback"
+  - "<gradient:#637758:#3A463D>═══════════════════════</gradient>"
+
+help-settings-sprite:
+  - "<gradient:#637758:#3A463D>═══════════════════════</gradient>"
+  - "<gradient:#89A685:#637758>ChatItemSprite Sprite Settings Commands</gradient>"
+  -
+  - "<color:#CFDDCA>/chatitemsprite settings sprite set <key> <value></color> <dark_gray>-</dark_gray> <color:#89A685>add/set sprites on define-sprites config"
+  - "<color:#CFDDCA>/chatitemsprite settings sprite remove <key><mode></color> <dark_gray>-</dark_gray> <color:#89A685>remove sprites from define-sprites config"
+  - "<gradient:#637758:#3A463D>═══════════════════════</gradient>"
+
+# ChatItemSprite messages prefix
+# only command notice message use this
+use-plugin-prefix: true
+plugin-prefix: "<gray>[</gray><gradient:#89A685:#637758>ChatItemSprite</gradient><gray>]</gray>"

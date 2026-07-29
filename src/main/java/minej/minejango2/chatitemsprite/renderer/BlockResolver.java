@@ -1,6 +1,12 @@
 package minej.minejango2.chatitemsprite.renderer;
 
+import io.papermc.paper.datacomponent.item.BlockItemDataProperties;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Light;
+import org.bukkit.block.data.type.TestBlock;
+import org.bukkit.inventory.ItemStack;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 
 import java.util.*;
 
@@ -116,8 +122,6 @@ public final class BlockResolver {
             Material.CARTOGRAPHY_TABLE,
             Material.BIG_DRIPLEAF,
             Material.SMALL_DRIPLEAF,
-            Material.TALL_GRASS,
-            Material.LARGE_FERN,
             Material.LILAC,
             Material.ROSE_BUSH,
             Material.PEONY,
@@ -148,27 +152,57 @@ public final class BlockResolver {
     private static final Map<Material, String> CUSTOM_TEXTURES = new EnumMap<>(Material.class);
 
     static {
-        CUSTOM_TEXTURES.put(Material.GRINDSTONE, "blocks:block/grindstone_round");
-        CUSTOM_TEXTURES.put(Material.CONDUIT, "blocks:entity/conduit/break_particle");
-        CUSTOM_TEXTURES.put(Material.CHISELED_BOOKSHELF, "blocks:block/chiseled_bookshelf_empty");
-        CUSTOM_TEXTURES.put(Material.LECTERN, "blocks:block/lectern_base");
-        CUSTOM_TEXTURES.put(Material.VAULT, "blocks:block/vault_front_off");
-        CUSTOM_TEXTURES.put(Material.TRIAL_SPAWNER, "blocks:block/trial_spawner_side_inactive");
-        CUSTOM_TEXTURES.put(Material.RESPAWN_ANCHOR, "blocks:block/respawn_anchor_side0");
-        CUSTOM_TEXTURES.put(Material.CRAFTER, "blocks:block/crafter_north");
-        CUSTOM_TEXTURES.put(Material.DECORATED_POT, "decorated_pot:entity/decorated_pot/decorated_pot_side");
-        CUSTOM_TEXTURES.put(Material.CALIBRATED_SCULK_SENSOR, "blocks:block/calibrated_sculk_sensor_input_side");
-        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_GRAVEL, "blocks:block/suspicious_gravel_0");
-        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_SAND, "blocks:block/suspicious_sand_0");
-        CUSTOM_TEXTURES.put(Material.DRIED_GHAST, "blocks:block/dried_ghast_hydration_0_north");
-        CUSTOM_TEXTURES.put(Material.MOSS_CARPET, "blocks:block/moss_block");
-        CUSTOM_TEXTURES.put(Material.SNOW_BLOCK, "blocks:block/snow");
-        CUSTOM_TEXTURES.put(Material.STICKY_PISTON, "blocks:block/piston_top_sticky");
+        CUSTOM_TEXTURES.put(Material.GRINDSTONE, "<sprite:blocks:block/grindstone_round>");
+        CUSTOM_TEXTURES.put(Material.CONDUIT, "<sprite:blocks:entity/conduit/break_particle>");
+        CUSTOM_TEXTURES.put(Material.CHISELED_BOOKSHELF, "<sprite:blocks:block/chiseled_bookshelf_empty>");
+        CUSTOM_TEXTURES.put(Material.LECTERN, "<sprite:blocks:block/lectern_base>");
+        CUSTOM_TEXTURES.put(Material.VAULT, "<sprite:blocks:block/vault_front_off>");
+        CUSTOM_TEXTURES.put(Material.TRIAL_SPAWNER, "<sprite:blocks:block/trial_spawner_side_inactive>");
+        CUSTOM_TEXTURES.put(Material.RESPAWN_ANCHOR, "<sprite:blocks:block/respawn_anchor_side0>");
+        CUSTOM_TEXTURES.put(Material.CRAFTER, "<sprite:blocks:block/crafter_north>");
+        CUSTOM_TEXTURES.put(Material.DECORATED_POT, "<sprite:decorated_pot:entity/decorated_pot/decorated_pot_side>");
+        CUSTOM_TEXTURES.put(Material.CALIBRATED_SCULK_SENSOR, "<sprite:blocks:block/calibrated_sculk_sensor_input_side>");
+        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_GRAVEL, "<sprite:blocks:block/suspicious_gravel_0>");
+        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_SAND, "<sprite:blocks:block/suspicious_sand_0>");
+        CUSTOM_TEXTURES.put(Material.DRIED_GHAST, "<sprite:blocks:block/dried_ghast_hydration_0_north>");
+        CUSTOM_TEXTURES.put(Material.MOSS_CARPET, "<sprite:blocks:block/moss_block>");
+        CUSTOM_TEXTURES.put(Material.SNOW_BLOCK, "<sprite:blocks:block/snow>");
+        CUSTOM_TEXTURES.put(Material.STICKY_PISTON, "<sprite:blocks:block/piston_top_sticky>");
 
         // _plant
-        CUSTOM_TEXTURES.put(Material.WEEPING_VINES, "blocks:block/weeping_vines_plant");
-        CUSTOM_TEXTURES.put(Material.TWISTING_VINES, "blocks:block/twisting_vines_plant");
-        CUSTOM_TEXTURES.put(Material.AZALEA, "blocks:block/azalea_plant");
+        CUSTOM_TEXTURES.put(Material.WEEPING_VINES, "<sprite:blocks:block/weeping_vines_plant>");
+        CUSTOM_TEXTURES.put(Material.TWISTING_VINES, "<sprite:blocks:block/twisting_vines_plant>");
+        CUSTOM_TEXTURES.put(Material.AZALEA, "<sprite:blocks:block/azalea_plant>");
+
+        // _back
+        CUSTOM_TEXTURES.put(Material.COMMAND_BLOCK, "<sprite:blocks:block/command_block_back>");
+        CUSTOM_TEXTURES.put(Material.REPEATING_COMMAND_BLOCK, "<sprite:blocks:block/repeating_command_block_back>");
+        CUSTOM_TEXTURES.put(Material.CHAIN_COMMAND_BLOCK, "<sprite:blocks:block/chain_command_block_back>");
+
+        // mob head
+        CUSTOM_TEXTURES.put(Material.ZOMBIE_HEAD, "<head:entity/zombie/zombie>");
+
+        // plants, adding color
+        CUSTOM_TEXTURES.put(Material.SHORT_GRASS, "<color:#7cbd6b><sprite:blocks:block/short_grass>");
+        CUSTOM_TEXTURES.put(Material.TALL_GRASS, "<color:#7cbd6b><sprite:blocks:block/tall_grass_top>");
+
+        CUSTOM_TEXTURES.put(Material.FERN, "<color:#7cbd6b><sprite:blocks:block/fern>");
+        CUSTOM_TEXTURES.put(Material.LARGE_FERN, "<color:#7cbd6b><sprite:blocks:block/large_fern_top>");
+
+        CUSTOM_TEXTURES.put(Material.BUSH, "<color:#7cbd6b><sprite:blocks:block/bush>");
+
+        CUSTOM_TEXTURES.put(Material.LILY_PAD, "<color:#71c35c><sprite:blocks:block/lily_pad>");
+
+        CUSTOM_TEXTURES.put(Material.VINE, "<color:#48b518><sprite:blocks:block/vine>");
+
+        CUSTOM_TEXTURES.put(Material.OAK_LEAVES, "<color:#48b518><sprite:blocks:block/oak_leaves>");
+        CUSTOM_TEXTURES.put(Material.JUNGLE_LEAVES, "<color:#48b518><sprite:blocks:block/jungle_leaves>");
+        CUSTOM_TEXTURES.put(Material.ACACIA_LEAVES, "<color:#48b518><sprite:blocks:block/acacia_leaves>");
+        CUSTOM_TEXTURES.put(Material.DARK_OAK_LEAVES, "<color:#48b518><sprite:blocks:block/dark_oak_leaves>");
+
+        CUSTOM_TEXTURES.put(Material.MANGROVE_LEAVES, "<color:#92c648><sprite:blocks:block/mangrove_leaves>");
+        CUSTOM_TEXTURES.put(Material.SPRUCE_LEAVES, "<color:#619961><sprite:blocks:block/spruce_leaves>");
+        CUSTOM_TEXTURES.put(Material.BIRCH_LEAVES, "<color:#80a755><sprite:blocks:block/birch_leaves>");
     }
 
     private static void add(Set<Material> set, String name) {
@@ -238,9 +272,40 @@ public final class BlockResolver {
         }
     }
 
-    public static String resolveBlockSprite(Material material) {
+    public static String resolveBlockSprite(ItemStack item) {
+        Material originalMaterial = item.getType();
+
+        if (originalMaterial == Material.TEST_BLOCK) {
+            BlockItemDataProperties properties = item.getData(DataComponentTypes.BLOCK_DATA);
+
+            if (properties != null) {
+                BlockData data = properties.applyTo(originalMaterial.createBlockData());
+
+                if (data instanceof TestBlock testBlock) {
+                    return "<sprite:blocks:block/test_block_" + testBlock.getMode().name().toLowerCase() + ">";
+                }
+            }
+            return "<sprite:blocks:block/test_block_start>";
+        }
+
+        if (originalMaterial == Material.LIGHT) {
+            BlockItemDataProperties properties = item.getData(DataComponentTypes.BLOCK_DATA);
+
+            if (properties != null) {
+                BlockData data = properties.applyTo(originalMaterial.createBlockData());
+
+                if (data instanceof Light light) {
+                    return "<sprite:items:item/light_%02d>".formatted(light.getLevel());
+                }
+            }
+
+            return "<sprite:items:item/light_15>";
+        }
+
+        Material material = normalizeVanillaName(originalMaterial);
+
         if (FORCE_ITEM.contains(material)) {
-            return "items:item/" + material.name().toLowerCase();
+            return "<sprite:items:item/" + material.name().toLowerCase() + ">";
         }
 
         String custom = CUSTOM_TEXTURES.get(material);
@@ -251,17 +316,36 @@ public final class BlockResolver {
         String name = material.name().toLowerCase();
 
         if (SIDE_TEXTURES.contains(material)) {
-            return "blocks:block/" + name + "_side";
+            return "<sprite:blocks:block/" + name + "_side" + ">";
         }
 
         if (TOP_TEXTURES.contains(material)) {
-            return "blocks:block/" + name + "_top";
+            return "<sprite:blocks:block/" + name + "_top" + ">";
         }
 
         if (FRONT_TEXTURES.contains(material)) {
-            return "blocks:block/" + name + "_front";
+            return "<sprite:blocks:block/" + name + "_front" + ">";
         }
 
-        return "blocks:block/" + name;
+        return "<sprite:blocks:block/" + name + ">";
+    }
+
+    private static Material normalizeVanillaName(Material material) {
+        String name = material.name();
+
+
+        if (name.startsWith("WAXED_")) {
+            name = name.substring(6);
+        }
+
+        if (name.startsWith("INFESTED_")) {
+            name = name.substring(9);
+        }
+
+        try {
+            return Material.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return material;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package minej.minejango2.chatitemsprite.updater;
+package minej.minejango2.chatitemsprite.update;
 
 import java.util.Optional;
 import java.util.regex.Matcher;

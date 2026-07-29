@@ -1,10 +1,13 @@
 package minej.minejango2.chatitemsprite;
 
+import minej.minejango2.chatitemsprite.compat.InteractiveChatCompat;
 import minej.minejango2.chatitemsprite.config.MessagesManager;
+import minej.minejango2.chatitemsprite.config.SlotKeywordsManager;
 import minej.minejango2.chatitemsprite.config.SpriteManager;
-import minej.minejango2.chatitemsprite.updater.UpdateChecker;
-import minej.minejango2.chatitemsprite.updater.VersionComparator;
-import minej.minejango2.chatitemsprite.updater.VersionInfo;
+import minej.minejango2.chatitemsprite.update.UpdateChecker;
+import minej.minejango2.chatitemsprite.update.VersionComparator;
+import minej.minejango2.chatitemsprite.update.VersionInfo;
+import minej.minejango2.chatitemsprite.renderer.CustomItemIdentifier;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +24,10 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
     private MessagesManager messagesManager;
     private SpriteManager spriteManager;
     private UpdateChecker updateChecker;
+    private SlotKeywordsManager slotKeywordsManager;
+    private CustomItemIdentifier customItemIdentifier;
     private final EnumSet<CustomItemPlugin> enabledPlugins = EnumSet.noneOf(CustomItemPlugin.class);
-    public boolean isPluginEnabledCustom(CustomItemPlugin thePlugin) {
-        return enabledPlugins.contains(thePlugin);
-    }
+    public boolean isPluginEnabledCustom(CustomItemPlugin thePlugin) {return enabledPlugins.contains(thePlugin);}
 
     public enum CustomItemPlugin {
         ITEMSADDER("ItemsAdder"),
@@ -52,14 +55,12 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
 
-        registerListeners();
-        registerCommands();
-
         messagesManager = new MessagesManager(this);
         messagesManager.reload();
         spriteManager = new SpriteManager(this);
         spriteManager.reload();
         updateChecker = new UpdateChecker(this);
+        slotKeywordsManager = new SlotKeywordsManager(this);
 
         for (CustomItemPlugin plugin : CustomItemPlugin.values()) {
             if (Bukkit.getPluginManager().isPluginEnabled(plugin.getPluginName())) {
@@ -67,6 +68,13 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
                 getLogger().info("Detected " + plugin.getPluginName() + ".");
             }
         }
+
+        customItemIdentifier = new CustomItemIdentifier(this);
+
+        registerListeners();
+        registerCommands();
+
+        InteractiveChatCompat.registerIfApplicable(this);
 
         getLogger().info("ChatItemSprite enabled.");
     }
@@ -97,14 +105,12 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
                 Optional<Boolean> isNewer = VersionComparator.tryIsNewer(current, latest.version());
 
                 if (isNewer.isEmpty()) {
-                    getLogger().warning("Update check: could not compare current version '"
-                            + current + "' with latest '" + latest.version() + "'.");
+                    getLogger().warning("Update check: could not compare current version '" + current + "' with latest '" + latest.version() + "'.");
                     return;
                 }
 
                 if (isNewer.get()) {
-                    getLogger().warning("A new version of ChatItemSprite is available: "
-                            + latest.version() + " (current: " + current + "). Download: " + latest.url());
+                    getLogger().warning("A new version of ChatItemSprite is available: " + latest.version() + " (current: " + current + "). Download: " + latest.url());
                 } else {
                     getLogger().info("ChatItemSprite is up to date (" + current + ").");
                 }
@@ -120,8 +126,7 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
     }
 
     private void registerListeners() {
-        getServer().getPluginManager().registerEvents(this, this);
-        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+        new ChatListener(this).register();
     }
 
     private void registerCommands() {
@@ -132,9 +137,12 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
         reloadConfig();
         messagesManager.reload();
         spriteManager.reload();
+        slotKeywordsManager.reload();
     }
 
     public MessagesManager getMessagesManager() {return messagesManager;}
     public SpriteManager getSpriteManager() {return spriteManager;}
     public UpdateChecker getUpdateChecker() {return updateChecker;}
+    public SlotKeywordsManager getSlotKeywordsManager() {return slotKeywordsManager;}
+    public CustomItemIdentifier getCustomItemIdentifier() {return customItemIdentifier;}
 }

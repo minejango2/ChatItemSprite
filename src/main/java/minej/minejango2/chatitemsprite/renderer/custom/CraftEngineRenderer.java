@@ -1,6 +1,5 @@
 package minej.minejango2.chatitemsprite.renderer.custom;
 
-import net.momirealms.craftengine.core.util.Key;
 import org.bukkit.inventory.ItemStack;
 import net.momirealms.craftengine.bukkit.api.CraftEngineItems;
 

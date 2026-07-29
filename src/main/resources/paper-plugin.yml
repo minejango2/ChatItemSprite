@@ -28,20 +28,51 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+    InteractiveChat:
+      load: BEFORE
+      required: false
+      join-classpath: true
 
 permissions:
   chatitemsprite.use:
-    description: Allows using the ChatItemSprite feature
+    description: Allows using the ChatItemSprite [item] feature
     default: true
   chatitemsprite.command:
-    description: Allows using ChatItemSprite commands
+    description: Allows access ChatItemSprite commands
     default: op
   chatitemsprite.command.reload:
     description: Allows reloading the ChatItemSprite plugin
     default: op
   chatitemsprite.command.help:
-    description: Allows using /chatitemsprite help
+    description: Allows check help
+    default: op
+  chatitemsprite.command.help.settings:
+    description: Allows check settings help
+    default: op
+  chatitemsprite.command.help.settings.sprite:
+    description: Allows check sprite settings help
     default: op
   chatitemsprite.command.version:
-    description: Allows check latest ChatItemSprite version
+    description: Allows check latest ChatItemSprite version by command
+    default: op
+  chatitemsprite.command.settings:
+    description: Allows modify config settings by command
+    default: op
+  chatitemsprite.command.settings.display-mode:
+    description: Allows modify config's item.display-mode by command
+    default: op
+  chatitemsprite.command.settings.vanilla-fallback:
+    description: Allows modify config's item.unsupported-vanilla-item-fallback by command
+    default: op
+  chatitemsprite.command.settings.custom-fallback:
+    description: Allows modify config's item.unsupported-custom-item-fallback by command
+    default: op
+  chatitemsprite.command.settings.sprite:
+    description: Allows access sprite subcommand that could edit `define-sprites`
+    default: op
+  chatitemsprite.command.settings.sprite.set:
+    description: Allows add and set defined sprites in `define-sprites` by command
+    default: op
+  chatitemsprite.command.settings.sprite.remove:
+    description: Allows remove defined sprites in `define-sprites` by command
     default: op

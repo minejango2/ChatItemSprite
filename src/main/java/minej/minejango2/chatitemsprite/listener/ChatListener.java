@@ -21,7 +21,29 @@ public final class ChatListener implements Listener {
         this.chatFormatter = new ChatFormatter(plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void register() {
+        EventPriority priority = resolvePriority();
+
+        plugin.getServer().getPluginManager().registerEvent(
+                AsyncChatEvent.class,
+                this,
+                priority,
+                (listener, event) -> onAsyncChat((AsyncChatEvent) event),
+                plugin,
+                true // ignoreCancelled
+        );
+    }
+
+    private EventPriority resolvePriority() {
+        String value = plugin.getConfig().getString("item.chat-event-priority", "HIGHEST").toUpperCase();
+        try {
+            return EventPriority.valueOf(value);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("Unknown item.chat-event-priority '" + value + "', falling back to HIGHEST. Valid values: LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR.");
+            return EventPriority.HIGHEST;
+        }
+    }
+
     public void onAsyncChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
         Component processed = messageProcessor.process(player, event.message());

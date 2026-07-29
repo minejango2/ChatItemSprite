@@ -10,6 +10,7 @@ repositories {
     maven("https://repo.nexomc.com/releases")
     maven("https://repo.momirealms.net/releases/")
     maven("https://repo.oraxen.com/releases")
+    maven("https://repo.loohpjames.com/repository")
 }
 
 dependencies {
@@ -21,6 +22,7 @@ dependencies {
     compileOnly("net.momirealms:craft-engine-bukkit:26.7")
     compileOnly("com.nexomc:nexo:1.25.0")
     compileOnly("io.th0rgal:oraxen:1.217.0")
+    compileOnly("com.loohp:InteractiveChat:2026.1.1.0")
 
     implementation("org.bstats:bstats-bukkit:3.2.1")
 }

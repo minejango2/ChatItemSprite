@@ -4,18 +4,34 @@
 # Enable or disable the entire plugin feature
 enabled: true
 
+# Plugin compat settings
+compatibility:
+  # InteractiveChat
+  interactivechat:
+    # If true, disable InteractiveChat's [item] so ChatItemSprite could handle [item] itself
+    # If false, ChatItemSprite and InteractiveChat will be handled by EventPriority (InteractiveChat's EventPriority is customizable in chatEventPriority)
+    disable-native-item: true
+
 # Update Checker
 update-check:
   enabled: true
   # Also notify about beta versions.
   notify-beta: false
 
+# Chat's EventPriority
+# Valid values: LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+chat-event-priority: HIGHEST
+
 # Enable or disable LuckPerms formatting support
 luckperms-formatting: false
 
 # chat format for LuckPerms. Ignored if luckperms-formatting is false
-# LuckPerms prefix's legacy color codes still works - we use the code as same as LuckPerms for prefix
-chat-format: "{prefix} {player}: {message}"
+# LuckPerms prefix's legacy color codes still works - we use the same code (prefix color format) LuckPerms for prefix
+# Tags:
+#   <cis_prefix> - Get LuckPerms Prefix
+#   <cis_player> - Message sender's name
+#   <cis_message> - Message of sender
+chat-format: "<cis_prefix> <cis_player>: <cis_message>"
 
 # Replace all [item] tags
 # if false, only the first [item] text will be replaced
@@ -28,56 +44,84 @@ replace-all: true
 #   sprite-only - Display sprite only (e.g., [<sprite:items:item/netherite_sword>])
 #   both - Display both sprite and text (e.g., [<sprite:items:item/netherite_sword> Netherite Sword x1])
 item:
-  display-mode: "both"
+  display-mode: both
 
   # Format for unsupported vanilla items (like player_head, shield, tipped_arrow, etc.)
   # if you want to add a support for these items, you can add in define-vanilla-sprites
   #   text (default) - Display text-only format (e.g., [Player Head x1])
   #   none - Display fallback-none format (e.g., [?])
-  unsupported-vanilla-item-fallback: "text"
+  unsupported-vanilla-item-fallback: text
 
   # Format for unsupported/texture-missing custom items (ItemsAdder, Oraxen, Nexo, CraftEngine)
-  #   raw - Display raw material's sprite by sprite-only format (e.g., [<sprite:items:item/iron_sword> Ruby Sword x1])
+  #   raw - Display raw material's sprite by item's display-mode format (e.g., when display mode is both, result is [<sprite:items:item/iron_sword> Ruby Sword x1])
+  #         if raw material is unsupported, unsupported-vanilla-item-fallback will determine the component
   #   text (default) - Display text-only format (e.g., [Ruby x1])
   #   none - Display fallback-none format (e.g., [?])
-  unsupported-custom-item-fallback: "text"
+  unsupported-custom-item-fallback: text
 
   # Show hover tooltip with full item info
   show-hover-info: true
 
-  # remove item's amount
-  # resolved ONLY in <cis_amount_tag>
+  # Remove item's amount when 1
   hide-amount-when-one: false
+
+  # chat keyword(tag) for item display
+  keywords:
+    - "[item]"
+    - "[i]"
+
+  # keywords' <slot> ([keyword:<slot>]) value
+  slot-keywords:
+    hand:
+      - "hand"
+      - "mainhand"
+      - "main"
+    offhand:
+      - "offhand"
+    head:
+      - "head"
+      - "helmet"
+    chest:
+      - "chest"
+      - "chestplate"
+    legs:
+      - "legs"
+      - "leggings"
+    feet:
+      - "feet"
+      - "boots"
 
 # [item] Text Format
 # Custom tags:
 #   <cis_sprite> - print sprite as MiniMessage <sprite> (works properly in "both", "sprite-only")
 #   <cis_name> - print localized item name (works properly in "both", "text-only")
 #   <cis_amount_tag> - print amount-tag-format (works properly in "both", "sprite-only", "text-only")
-#   <cis_amount> (DEPRECATED) - [hide-amount-when-one WON'T WORK] print item's amount. (works properly in "both", "sprite-only", "text-only")
-#                  Instead of writing <cis_amount> directly in `text-format`, it is recommended to use `<cis_amount_tag>`.
 text-format:
-  "sprite-only": "<gray>[<reset><cis_sprite><gray>]"
-  "text-only": "<gray>[<reset><cis_name><cis_amount_tag><gray>]"
-  "both": "<gray>[<reset><cis_sprite> <cis_name><cis_amount_tag><gray>]"
-  "fallback-none": "<gray>[<reset>?<gray>]"
-  # Message when player is holding nothing (air)
-  empty-hand-format: "<gray>[<reset>Empty Hand<gray>]"
+  sprite-only: "<gray>[<reset><cis_sprite><gray>]"
+  text-only: "<gray>[<reset><cis_name><cis_amount_tag><gray>]"
+  both: "<gray>[<reset><cis_sprite> <cis_name><cis_amount_tag><gray>]"
+  fallback-none: "<gray>[<reset>?<gray>]"
+  # Message when player is holding(equipping) air/nothing
+  empty-format:
+    hand: "<gray>[Empty Hand]"
+    offhand: "<gray>[Empty Offhand]"
+    head: "<gray>[No Helmet]"
+    chest: "<gray>[No Chestplate]"
+    legs: "<gray>[No Leggings]"
+    feet: "<gray>[No Boots]"
 
 # <cis_amount_tag> format
 #   <cis_amount_number> - print item's amount
 amount-tag-format: " x<cis_amount_number>"
 
-# Vanilla item sprite definitions
-# Format: "<vanilla_item_id>": "<atlas>:<sprite_path>"
-define-vanilla-sprites:
-  "oak_log": blocks:block/oak_log_top
-
-# Custom item sprite definitions
-# Format: "<plugin>:<item_id>": "<atlas>:<sprite_path>"
+# sprite definitions
+# Vanilla Format: "<vanilla_item_id>": <sprite> MiniMessage string
+# Custom Format: "<plugin>:<item_id>": <sprite> MiniMessage string
 # Currently supports: ItemsAdder, Oraxen, Nexo, CraftEngine
-# if you need to change atlas by other namespaces, escape double quotation marks with \
-define-custom-item-sprites:
-  "itemsadder:example_pack:paper_sword": "items:\"example_pack:item/paper_sword_1\""
-  "oraxen:amethyst_ore": blocks:default/amethyst_ore
-  "craftengine:default:drill": "\"minecraft:items\":item/custom/drill_selected"
+# You have to escape quotation marks by using '/' (slash) IF you wrapped sprite string by quotation marks
+# See Atlas & Sprite Guide for mor information: https://github.com/minejango2/ChatItemSprite/wiki/Atlas-%26-Sprite-Guide
+define-sprites:
+  "oak_log": <sprite:blocks:block/oak_log_top>
+  "itemsadder:example_pack:paper_sword": <sprite:items:"example_pack:item/paper_sword_1">
+  "oraxen:amethyst_ore": <sprite:items:default/amethyst_ore>
+  "craftengine:default:drill": <sprite:"minecraft:items":item/custom/drill_selected>
