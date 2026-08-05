@@ -121,6 +121,7 @@ amount-tag-format: " x<cis_amount_number>"
 # You have to escape quotation marks by using '/' (slash) IF you wrapped sprite string by quotation marks
 # See Atlas & Sprite Guide for mor information: https://github.com/minejango2/ChatItemSprite/wiki/Atlas-%26-Sprite-Guide
 define-sprites:
+  "trapped_chest": <head64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1YmNmZjJlNzRkZWVkMzdhMzE5YTFmNDA0ZTcwZDA2YTVmMzYwY2FjZWU5OWM3MTM0NmYzODU2MGNiZDcyYSJ9fX0=>
   "oak_log": <sprite:blocks:block/oak_log_top>
   "itemsadder:example_pack:paper_sword": <sprite:items:"example_pack:item/paper_sword_1">
   "oraxen:amethyst_ore": <sprite:items:default/amethyst_ore>

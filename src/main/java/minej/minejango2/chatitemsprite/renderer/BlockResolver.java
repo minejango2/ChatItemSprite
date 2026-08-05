@@ -13,16 +13,9 @@ import java.util.*;
 public final class BlockResolver {
 
     private static final List<String> WOOD_NAMES = List.of(
-            "OAK",
-            "SPRUCE",
-            "BIRCH",
-            "JUNGLE",
-            "ACACIA",
-            "DARK_OAK",
-            "MANGROVE",
-            "CHERRY",
-            "PALE_OAK"// 26.3 ,
-            // 26.3 "POPLAR"
+            "OAK", "SPRUCE", "BIRCH", "JUNGLE", "ACACIA", "DARK_OAK",
+            "MANGROVE", "CHERRY", "PALE_OAK",// 26.3 "POPLAR",
+            "BAMBOO"
     );
 
     private static final List<String> NETHER_HYPHAE_NAMES = List.of(
@@ -31,22 +24,9 @@ public final class BlockResolver {
     );
 
     private static final List<String> COLOR_NAMES = List.of(
-            "RED",
-            "ORANGE",
-            "YELLOW",
-            "LIME",
-            "GREEN",
-            "CYAN",
-            "LIGHT_BLUE",
-            "BLUE",
-            "PURPLE",
-            "MAGENTA",
-            "PINK",
-            "BROWN",
-            "WHITE",
-            "LIGHT_GRAY",
-            "GRAY",
-            "BLACK"
+            "RED", "ORANGE", "YELLOW", "LIME", "GREEN", "CYAN",
+            "LIGHT_BLUE", "BLUE", "PURPLE", "MAGENTA", "PINK",
+            "BROWN", "WHITE", "LIGHT_GRAY", "GRAY", "BLACK"
     );
 
     private static final List<String> COOPER_PREFIXES = List.of(
@@ -57,118 +37,111 @@ public final class BlockResolver {
     );
 
     private static final Set<Material> FORCE_ITEM = EnumSet.of(
-            Material.IRON_DOOR,
-            Material.WHEAT,
-            Material.NETHER_WART,
             Material.BAMBOO,
-            Material.SUGAR_CANE,
-            Material.KELP,
-            Material.CANDLE, // Dyed variation got added in below (addCustom)
+            Material.BARRIER,
+            Material.BELL,
             Material.BREWING_STAND,
-            Material.PITCHER_PLANT,
-            Material.WILDFLOWERS,
-            Material.PINK_PETALS,
             Material.CAKE,
             Material.CAMPFIRE,
-            Material.SOUL_CAMPFIRE,
-            Material.LEAF_LITTER,
-            Material.POINTED_DRIPSTONE,
-            Material.SULFUR_SPIKE,
+            Material.CANDLE, // Dyed variation got added in below (addCustom)
             Material.CAULDRON,
-            Material.HOPPER,
-            Material.SEA_PICKLE,
-            Material.IRON_CHAIN,
-            Material.FLOWER_POT,
-            Material.BELL,
-            Material.TURTLE_EGG,
-            Material.SNIFFER_EGG,
-            Material.RESIN_CLUMP,
-            Material.LANTERN,
-            Material.SOUL_LANTERN,
-            Material.REPEATER,
             Material.COMPARATOR,
-            Material.BARRIER,
-            Material.STRUCTURE_VOID
+            Material.FLOWER_POT,
+            Material.HOPPER,
+            Material.IRON_CHAIN,
+            Material.IRON_DOOR,
+            Material.KELP,
+            Material.LANTERN,
+            Material.LEAF_LITTER,
+            Material.NETHER_WART,
+            Material.PINK_PETALS,
+            Material.PITCHER_PLANT,
+            Material.POINTED_DRIPSTONE,
+            Material.REPEATER,
+            Material.RESIN_CLUMP,
+            Material.SEA_PICKLE,
+            Material.SNIFFER_EGG,
+            Material.SOUL_CAMPFIRE,
+            Material.SOUL_LANTERN,
+            Material.STRUCTURE_VOID,
+            Material.SUGAR_CANE,
+            Material.SULFUR_SPIKE,
+            Material.TURTLE_EGG,
+            Material.WHEAT,
+            Material.WILDFLOWERS
     );
 
     private static final Set<Material> SIDE_TEXTURES = EnumSet.of(
-            Material.GRASS_BLOCK,
-            Material.MYCELIUM,
-            Material.PODZOL,
-            Material.DIRT_PATH,
-            Material.TARGET,
-            Material.PISTON,
-            Material.STONECUTTER,
-            Material.ENCHANTING_TABLE,
-            Material.COMPOSTER,
-            Material.END_PORTAL_FRAME,
+            Material.ANCIENT_DEBRIS,
             Material.BASALT,
+            Material.CACTUS,
+            Material.COMPOSTER,
+            Material.DIRT_PATH,
+            Material.ENCHANTING_TABLE,
+            Material.END_PORTAL_FRAME,
+            Material.FLOWERING_AZALEA,
+            Material.GRASS_BLOCK,
+            Material.HAY_BLOCK,
+            Material.LODESTONE,
+            Material.MANGROVE_ROOTS,
+            Material.MUDDY_MANGROVE_ROOTS,
+            Material.MYCELIUM,
+            Material.PISTON,
+            Material.PODZOL,
             Material.POLISHED_BASALT,
-            Material.REINFORCED_DEEPSLATE,
-            Material.SCULK_SENSOR,
-            Material.SCULK_SHRIEKER,
             Material.PURPUR_PILLAR,
             Material.QUARTZ_PILLAR,
-            Material.ANCIENT_DEBRIS,
-            Material.LODESTONE,
-            Material.FLOWERING_AZALEA, // WHY MOJANG
-            Material.SCULK_CATALYST
+            Material.REINFORCED_DEEPSLATE,
+            Material.SCULK_CATALYST,
+            Material.SCULK_SENSOR,
+            Material.SCULK_SHRIEKER,
+            Material.STONECUTTER,
+            Material.TARGET,
+            Material.TNT
     );
 
     private static final Set<Material> TOP_TEXTURES = EnumSet.of(
-            Material.STICKY_PISTON,
-            Material.GLASS,
-            Material.SCAFFOLDING,
-            Material.CARTOGRAPHY_TABLE,
-            Material.BIG_DRIPLEAF,
-            Material.SMALL_DRIPLEAF,
-            Material.LILAC,
-            Material.ROSE_BUSH,
-            Material.PEONY,
-            Material.JUKEBOX,
             Material.ANVIL,
+            Material.BARREL,
+            Material.BIG_DRIPLEAF,
+            Material.BONE_BLOCK,
+            Material.CARTOGRAPHY_TABLE,
             Material.CHIPPED_ANVIL,
             Material.DAMAGED_ANVIL,
-            Material.BARREL,
-            Material.HONEY_BLOCK,
             Material.DAYLIGHT_DETECTOR,
-            Material.JIGSAW
+            Material.GLASS,
+            Material.HONEY_BLOCK,
+            Material.JIGSAW,
+            Material.JUKEBOX,
+            Material.LILAC,
+            Material.OCHRE_FROGLIGHT,
+            Material.PEARLESCENT_FROGLIGHT,
+            Material.PEONY,
+            Material.ROSE_BUSH,
+            Material.SCAFFOLDING,
+            Material.SMALL_DRIPLEAF,
+            Material.VERDANT_FROGLIGHT
     );
 
     private static final Set<Material> FRONT_TEXTURES = EnumSet.of(
-            Material.CRAFTING_TABLE,
-            Material.FURNACE,
-            Material.BLAST_FURNACE,
-            Material.SMOKER,
-            Material.OBSERVER,
-            Material.FLETCHING_TABLE,
-            Material.SMITHING_TABLE,
-            Material.LOOM,
-            Material.SUNFLOWER,
+            Material.BEEHIVE,
             Material.BEE_NEST,
-            Material.BEEHIVE
+            Material.BLAST_FURNACE,
+            Material.CRAFTING_TABLE,
+            Material.DISPENSER,
+            Material.DROPPER,
+            Material.FLETCHING_TABLE,
+            Material.FURNACE,
+            Material.LOOM,
+            Material.OBSERVER,
+            Material.SMITHING_TABLE,
+            Material.SMOKER,
+            Material.SUNFLOWER
     );
 
     private static final Map<Material, String> CUSTOM_TEXTURES = new EnumMap<>(Material.class);
 
     static {
-        CUSTOM_TEXTURES.put(Material.GRINDSTONE, "<sprite:blocks:block/grindstone_round>");
-        CUSTOM_TEXTURES.put(Material.CONDUIT, "<sprite:blocks:entity/conduit/break_particle>");
-        CUSTOM_TEXTURES.put(Material.CHISELED_BOOKSHELF, "<sprite:blocks:block/chiseled_bookshelf_empty>");
-        CUSTOM_TEXTURES.put(Material.LECTERN, "<sprite:blocks:block/lectern_base>");
-        CUSTOM_TEXTURES.put(Material.VAULT, "<sprite:blocks:block/vault_front_off>");
-        CUSTOM_TEXTURES.put(Material.TRIAL_SPAWNER, "<sprite:blocks:block/trial_spawner_side_inactive>");
-        CUSTOM_TEXTURES.put(Material.RESPAWN_ANCHOR, "<sprite:blocks:block/respawn_anchor_side0>");
-        CUSTOM_TEXTURES.put(Material.CRAFTER, "<sprite:blocks:block/crafter_north>");
-        CUSTOM_TEXTURES.put(Material.DECORATED_POT, "<sprite:decorated_pot:entity/decorated_pot/decorated_pot_side>");
-        CUSTOM_TEXTURES.put(Material.CALIBRATED_SCULK_SENSOR, "<sprite:blocks:block/calibrated_sculk_sensor_input_side>");
-        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_GRAVEL, "<sprite:blocks:block/suspicious_gravel_0>");
-        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_SAND, "<sprite:blocks:block/suspicious_sand_0>");
-        CUSTOM_TEXTURES.put(Material.DRIED_GHAST, "<sprite:blocks:block/dried_ghast_hydration_0_north>");
-        CUSTOM_TEXTURES.put(Material.MOSS_CARPET, "<sprite:blocks:block/moss_block>");
-        CUSTOM_TEXTURES.put(Material.SNOW_BLOCK, "<sprite:blocks:block/snow>");
-        CUSTOM_TEXTURES.put(Material.STICKY_PISTON, "<sprite:blocks:block/piston_top_sticky>");
-
         // _plant
         CUSTOM_TEXTURES.put(Material.WEEPING_VINES, "<sprite:blocks:block/weeping_vines_plant>");
         CUSTOM_TEXTURES.put(Material.TWISTING_VINES, "<sprite:blocks:block/twisting_vines_plant>");
@@ -179,8 +152,32 @@ public final class BlockResolver {
         CUSTOM_TEXTURES.put(Material.REPEATING_COMMAND_BLOCK, "<sprite:blocks:block/repeating_command_block_back>");
         CUSTOM_TEXTURES.put(Material.CHAIN_COMMAND_BLOCK, "<sprite:blocks:block/chain_command_block_back>");
 
-        // mob head
+        // other suffixes
+        CUSTOM_TEXTURES.put(Material.CALIBRATED_SCULK_SENSOR, "<sprite:blocks:block/calibrated_sculk_sensor_input_side>");
+        CUSTOM_TEXTURES.put(Material.CHISELED_BOOKSHELF, "<sprite:blocks:block/chiseled_bookshelf_empty>");
+        CUSTOM_TEXTURES.put(Material.CRAFTER, "<sprite:blocks:block/crafter_north>");
+        CUSTOM_TEXTURES.put(Material.DRIED_GHAST, "<sprite:blocks:block/dried_ghast_hydration_0_north>");
+        CUSTOM_TEXTURES.put(Material.GRINDSTONE, "<sprite:blocks:block/grindstone_round>");
+        CUSTOM_TEXTURES.put(Material.LECTERN, "<sprite:blocks:block/lectern_base>");
+        CUSTOM_TEXTURES.put(Material.RESPAWN_ANCHOR, "<sprite:blocks:block/respawn_anchor_side0>");
+        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_GRAVEL, "<sprite:blocks:block/suspicious_gravel_0>");
+        CUSTOM_TEXTURES.put(Material.SUSPICIOUS_SAND, "<sprite:blocks:block/suspicious_sand_0>");
+        CUSTOM_TEXTURES.put(Material.TRIAL_SPAWNER, "<sprite:blocks:block/trial_spawner_side_inactive>");
+        CUSTOM_TEXTURES.put(Material.VAULT, "<sprite:blocks:block/vault_front_off>");
+
+        // using different item's sprite
+        CUSTOM_TEXTURES.put(Material.GLASS_PANE, "<sprite:blocks:block/glass>");
+        CUSTOM_TEXTURES.put(Material.MOSS_CARPET, "<sprite:blocks:block/moss_block>");
+        CUSTOM_TEXTURES.put(Material.SNOW_BLOCK, "<sprite:blocks:block/snow>");
+
+        // other things
+        CUSTOM_TEXTURES.put(Material.DECORATED_POT, "<sprite:decorated_pot:entity/decorated_pot/decorated_pot_side>");
+        CUSTOM_TEXTURES.put(Material.CONDUIT, "<sprite:blocks:entity/conduit/break_particle>");
         CUSTOM_TEXTURES.put(Material.ZOMBIE_HEAD, "<head:entity/zombie/zombie>");
+
+        // weird namings
+        CUSTOM_TEXTURES.put(Material.DRIED_KELP_BLOCK, "<sprite:blocks:block/dried_kelp_side>");
+        CUSTOM_TEXTURES.put(Material.STICKY_PISTON, "<sprite:blocks:block/piston_top_sticky>");
 
         // plants, adding color
         CUSTOM_TEXTURES.put(Material.SHORT_GRASS, "<color:#7cbd6b><sprite:blocks:block/short_grass>");
@@ -225,14 +222,16 @@ public final class BlockResolver {
     static {
         for (String name : WOOD_NAMES) {
             try {
-                // LOG
-                add(TOP_TEXTURES, name + "_LOG");
-                add(TOP_TEXTURES, "STRIPPED_" + name + "_LOG");
+                if (!name.equals("BAMBOO")) {
+                    // LOG
+                    add(TOP_TEXTURES, name + "_LOG");
+                    add(TOP_TEXTURES, "STRIPPED_" + name + "_LOG");
+                    // WOOD
+                    addCustom(name + "_WOOD", "blocks:block/" + name.toLowerCase() + "_log");
+                    addCustom("STRIPPED_" + name + "_WOOD", "blocks:block/stripped_" + name.toLowerCase() + "_log");
+                }
                 // DOOR
                 add(FORCE_ITEM, name + "_DOOR");
-                // WOOD
-                addCustom(name + "_WOOD", "blocks:block/" + name.toLowerCase() + "_log");
-                addCustom("STRIPPED_" + name + "_WOOD", "blocks:block/stripped_" + name.toLowerCase() + "_log");
                 // SIGN
                 add(FORCE_ITEM, name + "_SIGN");
                 add(FORCE_ITEM, name + "_HANGING_SIGN");
@@ -316,15 +315,15 @@ public final class BlockResolver {
         String name = material.name().toLowerCase();
 
         if (SIDE_TEXTURES.contains(material)) {
-            return "<sprite:blocks:block/" + name + "_side" + ">";
+            return "<sprite:blocks:block/" + name + "_side>";
         }
 
         if (TOP_TEXTURES.contains(material)) {
-            return "<sprite:blocks:block/" + name + "_top" + ">";
+            return "<sprite:blocks:block/" + name + "_top>";
         }
 
         if (FRONT_TEXTURES.contains(material)) {
-            return "<sprite:blocks:block/" + name + "_front" + ">";
+            return "<sprite:blocks:block/" + name + "_front>";
         }
 
         return "<sprite:blocks:block/" + name + ">";

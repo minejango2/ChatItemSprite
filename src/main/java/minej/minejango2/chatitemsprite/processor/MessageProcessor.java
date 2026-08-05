@@ -36,8 +36,7 @@ public final class MessageProcessor {
         List<String> prefixes = new java.util.ArrayList<>();
         for (String keyword : keywords) {
             if (!keyword.endsWith("]")) {
-                plugin.getLogger().warning("Ignoring invalid item.keywords entry '" + keyword
-                        + "': must end with ']'.");
+                plugin.getLogger().warning("Ignoring invalid item.keywords entry '" + keyword + "': must end with ']'.");
                 continue;
             }
             prefixes.add(keyword.substring(0, keyword.length() - 1));

@@ -42,7 +42,7 @@ public final class SpriteLookupResolver {
             Material.LIGHT_GRAY_BANNER,
             Material.GRAY_BANNER,
             Material.BLACK_BANNER,
-            // not yet - I couldn't find a safe solutions for these heads
+            // I couldn't find a safe solutions for these heads (I won't use base64 for internal solutions)
             Material.CREEPER_HEAD,
             Material.SKELETON_SKULL,
             Material.WITHER_SKELETON_SKULL,
