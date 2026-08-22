@@ -36,6 +36,7 @@ Unlike other chat item plugins, it displays an item sprite before the item name,
 
 ## Download Links
 * [Modrinth Download Page](https://modrinth.com/plugin/chatitemsprite)
+* [PaperMC Hangar Download Page](https://hangar.papermc.io/minejango2/ChatItemSprite)
 
 ## License
 This project is licensed under the MIT License.
