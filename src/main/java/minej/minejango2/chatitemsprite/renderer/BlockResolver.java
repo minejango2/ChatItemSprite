@@ -225,8 +225,8 @@ public final class BlockResolver {
                     add(TOP_TEXTURES, name + "_LOG");
                     add(TOP_TEXTURES, "STRIPPED_" + name + "_LOG");
                     // WOOD
-                    addCustom(name + "_WOOD", "blocks:block/" + name.toLowerCase() + "_log");
-                    addCustom("STRIPPED_" + name + "_WOOD", "blocks:block/stripped_" + name.toLowerCase() + "_log");
+                    addCustom(name + "_WOOD", "<sprite:blocks:block/" + name.toLowerCase() + "_log>");
+                    addCustom("STRIPPED_" + name + "_WOOD", "<sprite:blocks:block/stripped_" + name.toLowerCase() + "_log>");
                 }
                 // DOOR
                 add(FORCE_ITEM, name + "_DOOR");
@@ -244,8 +244,8 @@ public final class BlockResolver {
                 // DOOR
                 add(FORCE_ITEM, name + "_DOOR");
                 // WOOD
-                addCustom(name + "_HYPHAE", "blocks:block/" + name.toLowerCase() + "_stem");
-                addCustom("STRIPPED_" + name + "_HYPHAE", "blocks:block/stripped_" + name.toLowerCase() + "_stem");
+                addCustom(name + "_HYPHAE", "<sprite:blocks:block/" + name.toLowerCase() + "_stem>");
+                addCustom("STRIPPED_" + name + "_HYPHAE", "<sprite:blocks:block/stripped_" + name.toLowerCase() + "_stem>");
                 // SIGN
                 add(FORCE_ITEM, name + "_SIGN");
                 add(FORCE_ITEM, name + "_HANGING_SIGN");

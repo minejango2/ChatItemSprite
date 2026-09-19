@@ -102,7 +102,7 @@ public final class ItemRenderer {
             case CHEST -> "chest";
             case LEGS -> "legs";
             case FEET -> "feet";
-            default -> "hand"; // BODY 등 EquipmentSlot의 다른 값은 우리 슬롯 매핑에 없으므로 안전하게 hand로
+            default -> "hand";
         };
     }
 }
