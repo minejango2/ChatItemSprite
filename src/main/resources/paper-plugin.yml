@@ -4,7 +4,7 @@ version: '${version}'
 authors: [ minejango2 ]
 
 main: minej.minejango2.chatitemsprite.ChatItemSpritePlugin
-api-version: '26.2'
+api-version: '26.1'
 load: POSTWORLD
 dependencies:
   server:

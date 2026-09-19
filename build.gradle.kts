@@ -45,6 +45,10 @@ tasks {
     }
 }
 
+tasks.jar {
+    enabled = false
+}
+
 tasks.shadowJar {
     archiveClassifier.set("")
 
