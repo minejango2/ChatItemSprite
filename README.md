@@ -71,7 +71,9 @@ This project is licensed under the MIT License.
 
 ## 다운로드 링크
 
-* [Modrinth Download Page](https://modrinth.com/plugin/chatitemsprite)
+* [Modrinth](https://modrinth.com/plugin/chatitemsprite)
+* [PaperMC Hangar](https://hangar.papermc.io/minejango2/ChatItemSprite)
+* [Spigot](https://www.spigotmc.org/resources/chatitemsprite.138181/)
 
 ## 라이선스
 
