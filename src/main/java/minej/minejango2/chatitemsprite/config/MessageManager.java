@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public class MessagesManager {
+public class MessageManager {
     private final Plugin plugin;
     private final MiniMessage miniMessage;
 
@@ -19,7 +19,7 @@ public class MessagesManager {
     boolean usePluginPrefix;
     private Component prefix;
 
-    public MessagesManager(Plugin plugin) {
+    public MessageManager(Plugin plugin) {
         this.plugin = plugin;
         this.miniMessage = MiniMessage.miniMessage();
 

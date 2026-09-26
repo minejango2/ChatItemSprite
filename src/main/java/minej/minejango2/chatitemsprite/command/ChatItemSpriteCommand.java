@@ -42,26 +42,26 @@ public final class ChatItemSpriteCommand {
 
     // print help
     private int showHelp(CommandSourceStack source) {
-        plugin.getMessagesManager().sendMessageList(source.getSender(), "help");
+        plugin.getMessageManager().sendMessageList(source.getSender(), "help");
         return 1;
     }
 
     // print help
     private int showSettingsHelp(CommandSourceStack source) {
-        plugin.getMessagesManager().sendMessageList(source.getSender(), "help-settings");
+        plugin.getMessageManager().sendMessageList(source.getSender(), "help-settings");
         return 1;
     }
 
     // print help
     private int showSpriteSettingsHelp(CommandSourceStack source) {
-        plugin.getMessagesManager().sendMessageList(source.getSender(), "help-settings-sprite");
+        plugin.getMessageManager().sendMessageList(source.getSender(), "help-settings-sprite");
         return 1;
     }
 
     // get update checker
     private int showVersion(CommandSourceStack source) {
         var sender = source.getSender();
-        plugin.getMessagesManager().sendMessage(sender, "messages.version-checking", "<gray>Checking for updates...</gray>");
+        plugin.getMessageManager().sendMessage(sender, "messages.version-checking", "<gray>Checking for updates...</gray>");
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             VersionInfo latest;
@@ -80,30 +80,30 @@ public final class ChatItemSpriteCommand {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (finalFailure != null) {
                     plugin.getLogger().warning("Update check failed: " + finalFailure.getMessage());
-                    plugin.getMessagesManager().sendMessage(sender, "messages.version-check-failed", "<red>Failed to check for updates.</red>");
+                    plugin.getMessageManager().sendMessage(sender, "messages.version-check-failed", "<red>Failed to check for updates.</red>");
                     return;
                 }
 
                 String current = plugin.getPluginMeta().getVersion();
-                plugin.getMessagesManager().sendMessage(sender, "messages.version-current", "<gray>ChatItemSprite <current></gray>", "<current>", current);
+                plugin.getMessageManager().sendMessage(sender, "messages.version-current", "<gray>ChatItemSprite <current></gray>", "<current>", current);
 
                 if (finalLatest == null) {
-                    plugin.getMessagesManager().sendMessage(sender, "messages.version-unknown", "<yellow>Could not check for updates.</yellow>");
+                    plugin.getMessageManager().sendMessage(sender, "messages.version-unknown", "<yellow>Could not check for updates.</yellow>");
                     return;
                 }
 
                 var isNewer = VersionComparator.tryIsNewer(current, finalLatest.version());
 
-                plugin.getMessagesManager().sendMessage(sender, "messages.version-latest", "<gray>Latest: <latest></gray>", "<latest>", finalLatest.version());
-                plugin.getMessagesManager().sendMessage(sender, "messages.version-type", "<gray>Type: <type></gray>", "<type>", finalLatest.type());
+                plugin.getMessageManager().sendMessage(sender, "messages.version-latest", "<gray>Latest: <latest></gray>", "<latest>", finalLatest.version());
+                plugin.getMessageManager().sendMessage(sender, "messages.version-type", "<gray>Type: <type></gray>", "<type>", finalLatest.type());
 
                 if (isNewer.isEmpty()) {
                     plugin.getLogger().warning("Could not compare versions: current='" + current + "', latest='" + finalLatest.version() + "'");
-                    plugin.getMessagesManager().sendMessage(sender, "messages.version-compare-failed", "<yellow>Could not compare version numbers.</yellow>");
+                    plugin.getMessageManager().sendMessage(sender, "messages.version-compare-failed", "<yellow>Could not compare version numbers.</yellow>");
                 } else if (isNewer.get()) {
-                    plugin.getMessagesManager().sendMessage(sender, "messages.version-update-available", "<green>Update available!</green>");
+                    plugin.getMessageManager().sendMessage(sender, "messages.version-update-available", "<green>Update available!</green>");
                 } else {
-                    plugin.getMessagesManager().sendMessage(sender, "messages.version-up-to-date", "<green>You are using the latest version.</green>");
+                    plugin.getMessageManager().sendMessage(sender, "messages.version-up-to-date", "<green>You are using the latest version.</green>");
                 }
             });
         });
@@ -115,7 +115,7 @@ public final class ChatItemSpriteCommand {
         plugin.getConfig().set(path, value);
         plugin.saveConfig();
 
-        plugin.getMessagesManager().sendMessage(
+        plugin.getMessageManager().sendMessage(
                 source.getSender(),
                 "messages.saved-config",
                 "<green>Successfully saved <config_path> to <config_value>!</green>",
@@ -129,7 +129,7 @@ public final class ChatItemSpriteCommand {
         var sender = source.getSender();
 
         if (!plugin.getSpriteManager().isValidSpriteValue(value)) {
-            plugin.getMessagesManager().sendMessage(sender, "messages.settings-sprite-invalid", "<red>'<value>' is not a valid MiniMessage value.</red>", "<value>", value);
+            plugin.getMessageManager().sendMessage(sender, "messages.settings-sprite-invalid", "<red>'<value>' is not a valid MiniMessage value.</red>", "<value>", value);
             return 0;
         }
 
@@ -137,7 +137,7 @@ public final class ChatItemSpriteCommand {
         plugin.saveConfig();
         plugin.getSpriteManager().reload();
 
-        plugin.getMessagesManager().sendMessage(sender, "messages.settings-sprite-set", "<green>Added/Set: '<key>' -> <value></green>", "<key>", key, "<value>", value);
+        plugin.getMessageManager().sendMessage(sender, "messages.settings-sprite-set", "<green>Added/Set: '<key>' -> <value></green>", "<key>", key, "<value>", value);
 
         return 1;
     }
@@ -146,7 +146,7 @@ public final class ChatItemSpriteCommand {
         var sender = source.getSender();
 
         if (!plugin.getConfig().isSet("define-sprites." + key)) {
-            plugin.getMessagesManager().sendMessage(sender, "messages.settings-sprite-not-found", "<yellow>No sprite defined for '<key>'.</yellow>", "<key>", key);
+            plugin.getMessageManager().sendMessage(sender, "messages.settings-sprite-not-found", "<yellow>No sprite defined for '<key>'.</yellow>", "<key>", key);
             return 0;
         }
 
@@ -154,7 +154,7 @@ public final class ChatItemSpriteCommand {
         plugin.saveConfig();
         plugin.getSpriteManager().reload();
 
-        plugin.getMessagesManager().sendMessage(sender, "messages.settings-sprite-removed", "<green>Removed: '<key>'.</green>", "<key>", key);
+        plugin.getMessageManager().sendMessage(sender, "messages.settings-sprite-removed", "<green>Removed: '<key>'.</green>", "<key>", key);
 
         return 1;
     }
@@ -195,7 +195,7 @@ public final class ChatItemSpriteCommand {
                             .requires(perm(""))
                             .executes(ctx -> {
                                 var sender = ctx.getSource().getSender();
-                                plugin.getMessagesManager().sendMessage(sender, "messages.check-help", "<gradient:#89A685:#637758>Welcome! Please use \"/chatitemsprite help\" for helps!</gradient>");
+                                plugin.getMessageManager().sendMessage(sender, "messages.check-help", "<gradient:#89A685:#637758>Welcome! Please use \"/chatitemsprite help\" for helps!</gradient>");
                                 return 1;
                             })
                             .then(
@@ -222,9 +222,9 @@ public final class ChatItemSpriteCommand {
 
                                                 var sender = ctx.getSource().getSender();
                                                 if (plugin.getSpriteManager().hadWarningsOnLastReload()) {
-                                                    plugin.getMessagesManager().sendMessage(sender, "messages.reloaded-with-warn", "<yellow>ChatItemSprite got an issue while reloading. Please check console for details.</yellow>");
+                                                    plugin.getMessageManager().sendMessage(sender, "messages.reloaded-with-warn", "<yellow>ChatItemSprite got an issue while reloading. Please check console for details.</yellow>");
                                                 } else {
-                                                    plugin.getMessagesManager().sendMessage(sender, "messages.reload-success", "<green>Reloaded ChatItemSprite!</green>");
+                                                    plugin.getMessageManager().sendMessage(sender, "messages.reload-success", "<green>Reloaded ChatItemSprite!</green>");
                                                 }
                                                 return 1;
                                             })

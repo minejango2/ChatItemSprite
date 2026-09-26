@@ -150,6 +150,10 @@ public final class BlockResolver {
         addCustom("REPEATING_COMMAND_BLOCK", "<sprite:blocks:block/repeating_command_block_back>");
         addCustom("CHAIN_COMMAND_BLOCK", "<sprite:blocks:block/chain_command_block_back>");
 
+        // _particle
+        addCustom("SHELF_MUSHROOM", "<sprite:blocks:block/shelf_mushroom_particle>");
+        addCustom("STRAW_BED", "<sprite:blocks:block/straw_bed_particle>");
+
         // other suffixes
         addCustom("CALIBRATED_SCULK_SENSOR", "<sprite:blocks:block/calibrated_sculk_sensor_input_side>");
         addCustom("CHISELED_BOOKSHELF", "<sprite:blocks:block/chiseled_bookshelf_empty>");

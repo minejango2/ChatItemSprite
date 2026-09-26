@@ -1,13 +1,14 @@
 package minej.minejango2.chatitemsprite;
 
 import minej.minejango2.chatitemsprite.compat.InteractiveChatCompat;
-import minej.minejango2.chatitemsprite.config.MessagesManager;
+import minej.minejango2.chatitemsprite.config.MessageManager;
 import minej.minejango2.chatitemsprite.config.SlotKeywordsManager;
 import minej.minejango2.chatitemsprite.config.SpriteManager;
 import minej.minejango2.chatitemsprite.update.UpdateChecker;
 import minej.minejango2.chatitemsprite.update.VersionComparator;
 import minej.minejango2.chatitemsprite.update.VersionInfo;
 import minej.minejango2.chatitemsprite.renderer.CustomItemIdentifier;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
 
-    private MessagesManager messagesManager;
+    private MessageManager messageManager;
     private SpriteManager spriteManager;
     private UpdateChecker updateChecker;
     private SlotKeywordsManager slotKeywordsManager;
@@ -53,10 +54,13 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        int pluginId = 	32813;
+        Metrics metrics = new Metrics(this, pluginId);
+
         saveDefaultConfig();
 
-        messagesManager = new MessagesManager(this);
-        messagesManager.reload();
+        messageManager = new MessageManager(this);
+        messageManager.reload();
         spriteManager = new SpriteManager(this);
         spriteManager.reload();
         updateChecker = new UpdateChecker(this);
@@ -135,12 +139,12 @@ public final class ChatItemSpritePlugin extends JavaPlugin implements Listener {
 
     public void reloadPlugin() {
         reloadConfig();
-        messagesManager.reload();
+        messageManager.reload();
         spriteManager.reload();
         slotKeywordsManager.reload();
     }
 
-    public MessagesManager getMessagesManager() {return messagesManager;}
+    public MessageManager getMessageManager() {return messageManager;}
     public SpriteManager getSpriteManager() {return spriteManager;}
     public UpdateChecker getUpdateChecker() {return updateChecker;}
     public SlotKeywordsManager getSlotKeywordsManager() {return slotKeywordsManager;}
